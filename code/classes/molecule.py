@@ -1,15 +1,23 @@
 
-class Molecule():
-    def __init__(self):
-        nucleotide =
-        bound_from=
-        bound_to=
-        x_location=
-        y_location=
+class Molecule:
+    def __init__(self, nucleotide, molecule_number):
+        self.nucleotide = nucleotide
+        self.molecule_number = molecule_number
+        self.fold = None
+        self.x_location = None
+        self.y_location = None
 
-    def create_molecule(self):
+    # def molecule_location(self):
+    #     # molecule_number=
+    #     # x_location=
+    #     # y_location=
 
-    def bind(self):
+    # def next_molecule(self):
+    #     self.molecule_number 
 
-    def surrounding(self):
-        pass
+    # def surrounding(self):
+
+    # def bind(self):
+    #     pass
+    
+    # def is_valid(self):
