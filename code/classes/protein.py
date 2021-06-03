@@ -1,11 +1,12 @@
 
 from .molecule import Molecule
+import copy
 
 class Protein:
     def __init__(self, data):
         self.molecules = []
         self.data = data
-        
+        self.size_data= len(data)
         # self.x_value = 0
         # self.y_value = 0
         # self.location= [0, 0]
@@ -17,13 +18,15 @@ class Protein:
         self.nucleotide = None
         self.molecule_number = None
         location = [0, 0]
+        fold = 0
         
         for i, char in enumerate(self.data):
 
             molecule_number = i
             nucleotide = char
-            self.molecules.append(Molecule(nucleotide, molecule_number, location))
-            location = self.molecules[molecule_number].location
+            self.molecules.append(Molecule(nucleotide, molecule_number, location, fold, self.size_data))
+            location = copy.deepcopy(self.molecules[molecule_number].location)
+            fold = copy.deepcopy(self.molecules[molecule_number].fold)
     
     # def update_location(self, molecule_number):
     #     # make new location based on fold
