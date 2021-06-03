@@ -10,7 +10,7 @@ if __name__ == "__main__":
     Example = protein.Protein(data)
 
     for molecule in Example.molecules:
-        print(f"{molecule.nucleotide}, {molecule.molecule_number}")
+        print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.fold}, location: {molecule.location}")
     
 
 
