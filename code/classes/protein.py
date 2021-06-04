@@ -7,9 +7,8 @@ class Protein:
         self.molecules = []
         self.data = data
         self.size_data= len(data)
-        # self.x_value = 0
-        # self.y_value = 0
-        # self.location= [0, 0]
+        self.molecule_locations = {"Location":[], "Molecule":[]}
+        self.stability = 0
         
         self.create_protein()
        
@@ -19,30 +18,51 @@ class Protein:
         self.molecule_number = None
         location = [0, 0]
         fold = 0
-        
+        occupied = []
+
         for i, char in enumerate(self.data):
 
             molecule_number = i
             nucleotide = char
-            self.molecules.append(Molecule(nucleotide, molecule_number, location, fold, self.size_data))
-            location = copy.deepcopy(self.molecules[molecule_number].location)
-            fold = copy.deepcopy(self.molecules[molecule_number].fold)
+            occupied.append(location)
+            print(f"protein{occupied}")
+            molecule = Molecule(nucleotide, molecule_number, location, fold, self.size_data, occupied)
+            self.molecules.append(molecule)
+            self.molecule_locations[str(location)] = molecule
     
-    # def update_location(self, molecule_number):
-    #     # make new location based on fold
-    #     molecule = self.molecules[molecule_number]
-    #     self.x_value = molecule.location[0] + 1
-    #     self.y_value = molecule.location[1] + 1
-        
-        
-    # def is_valid(selfu):
-    #     #checks wether new molecule is not on another molecule
+            location = copy.deepcopy(self.molecules[molecule_number].next_location)
 
-    # def reconfigure(self):
-    #     #solves self blocking error
+            # set fold of the molecule
+            fold = copy.deepcopy(self.molecules[molecule_number].next_fold)
+        
 
-    # def stability(self):
-    #     #calculates stability value of the created protein
+    def score():
+        # maak een tijdelijke kopie van moleculen dict
+        temp_locations = copy.deepcopy(self.molecule_locations)
+        # loop over moleculen in eiwit
+        for molecule in temp_locations:
+            # note score if there is a possible binding
+            if molecule.nucleotide == "H" 
+                for i in range(surrounded_by(H))
+                    self.stability -= 1
+            
+            # remove molecule from temporary dict to prevent double scores
+            self.temp_locations.pop(molecule)
+        pass
+
+    def surrounded_by(molecule):
+        surrounded_by = 0
+        fold_directions = [-1, 1]
+        for i in fold_directions:
+            if 
+         # for every richting (rechts, links, boven, onder)
+            # check if location +/- 1 is not in dict
+            # check if location +/- 2 is in dict
+            # als allebei de checks, add location +/- 2 to bindingenlist
+
+        # return bindingen list
+        pass
+            
 
     
     

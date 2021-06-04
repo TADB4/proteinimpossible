@@ -1,7 +1,9 @@
 class Grid():
     def __init__(self):
         size=
-
+        key = location
+        
+        grid={key, molecule}
     def create_grid(self):
  
 
