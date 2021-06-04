@@ -11,7 +11,8 @@ class Protein:
         self.stability = 0
         
         self.create_protein()
-       
+        self.score()
+
     def create_protein(self):
         # keeps creating molecules until the protein is finished
         self.nucleotide = None
@@ -41,28 +42,32 @@ class Protein:
             fold = copy.deepcopy(self.molecules[molecule_number].next_fold)
         
 
-    def score():
-        # make temporary copy of molecules dict
-        temp_locations = copy.deepcopy(self.molecule_locations)
-        
-        # loop over molecules in protein
-        for molecule in temp_locations:
-            # note score if there is a possible binding
-            if molecule.nucleotide == "H":
-                for i in range(surrounded_by(molecule, H)):
-                    self.stability -= 1
-            
-            # remove molecule from temporary dict to prevent double scores
-            self.temp_locations.pop(molecule)
+    def score(self):
+        # # loop over molecules in protein
+        # for location in self.molecule_locations:
+        #     # note score if there is a possible binding
+        #     molecule = self.molecule_locations[location]
+        #     if molecule.nucleotide == "H":
+        #         for i in range(surrounded_by(molecule, H)):
+        #             self.stability -= 1
+        # print(self.stability)
+        pass
 
-    def surrounded_by(molecule, nucleotide):
-        surrounded_by = 0
-        fold_directions = [-1, 1]
-        for i in fold_directions:
-            
+    # def surrounded_by(molecule, nucleotide):
+    #     surrounded_by = 0
+    #     fold_directions = [-1, 1]
+    #     #checks for unbound neigbours on bound sides
+    #     for folds in fold_directions:
+    #         location_neigbour = molecule.location[0] + folds
 
-                if self.molecule_locations[location].molecule.nucleotide == nucleotide:
-                    surrounded_by += 1
+    #         if self.molecule_locations[location_neigbour] in self.molecule_locations:
+    #             nucleotide_neighbour = self.molecule_locations[location_neigbour].molecule.nucleotide
+
+    #             if nucleotide_neighbour == nucleotide:
+    #                 surrounded_by += 1
+    #     surrounded_by = surrounded_by/2
+    #     return surrounded_by
+        pass
             # for every richting (rechts, links, boven, onder)
                 # check if location +/- 1 is not in dict
                 # check if location +/- 2 is in dict

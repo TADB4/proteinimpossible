@@ -7,6 +7,7 @@
 
 import matplotlib
 import matplotlib.pyplot as plt 
+from code.classes import protein, molecule
 
 X_MIN = -10
 X_MAX = 10
@@ -17,6 +18,9 @@ print("test 2")
 
 def make_plot(protein):
     print("TEST3")
+    # testdata
+    protein = protein
+    protein_dict = protein.occupied
 
     # make plot
     fig = plt.figure()
@@ -29,11 +33,18 @@ def make_plot(protein):
     # set x- and y-axis limits
     ax.axis([X_MIN, X_MAX, Y_MIN, Y_MAX])
 
-    # print something
-    ax.plot([0], [0], 'H')
+    # loop over molecules of the protein
+    for item in protein_dict:
+        # obtain x and y values
+        item_list = item.split(",")
+        x_value = item_list[0]
+        y_value = item_list[1]
 
-    # show plot
-    plt.show()
+        # print nucleotide at correct location
+        ax.plot(x_value, y_value, protein_dict[item])
+
+    # save figure
+    plt.savefig("test")
 
 
 
