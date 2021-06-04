@@ -1,4 +1,5 @@
 import random
+import copy
 
 class Molecule:
     def __init__(self, nucleotide, molecule_number, location, fold, size_data, occupied):
@@ -20,7 +21,7 @@ class Molecule:
         # set fold types
         types = [-2, -1 , 1, 2]
         
-        #keeps it from immediately folding back on itself
+        # keeps it from immediately folding back on itself
         if self.fold != 0:
             types.remove(self.fold*-1)
 
@@ -36,44 +37,23 @@ class Molecule:
                 current_type = random.choice(types)
                 self.next_fold = current_type
 
-                # remove current fold from types
+                # remove current fold from types to prevent using the same fold
                 types.remove(current_type)
-
-                print("type:", current_type)
                 
                 # check if location is possible 
                 try_location = self.assign_location()
-                print("try_location:", try_location)
-                print("occupied:", self.occupied, "if")
+
+                # if location is not possible, try next fold
                 if try_location in self.occupied:
-                    print("Continue")
                     continue
-                elif try_location not in self.occupied:
-                    print("Done?")
+                # if location is possible, use location
                 else:
-                    print("Done")
                     self.next_location = try_location
                     return True
 
-                # if all types are checked without result
-                # if not types:
-                    # terminate = True
-
-            # self.next_fold = random.choice(types)
-            # try_location = self.assign_location()
-            # if try_location in self.occupied:
-            #     self.create_fold()
-            # else:
-            #     self.next_location = try_location
         
-    def assign_location(self):    
-        #assign location 0,0 for the first molecule
-        # if self.molecule_number == 0:
-        #     return [0,0] 
-        print(f"occupied: {self.occupied} location 1")
-        new_value = self.location
-
-        print(f"occupied: {self.occupied} location 2")
+    def assign_location(self):     
+        new_value = copy.deepcopy(self.location)
         # change location value based on fold
         if self.next_fold == 1:
             new_value[0] += 1
@@ -83,7 +63,7 @@ class Molecule:
             new_value[1] += 1
         elif self.next_fold == -2:
             new_value[1] -= 1
-        print(f"occupied: {self.occupied} location 3")
+            
         return new_value
 
 

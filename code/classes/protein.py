@@ -20,16 +20,21 @@ class Protein:
         fold = 0
         occupied = []
 
+        # loop over nucleotides of the data and add info to molecule object
         for i, char in enumerate(self.data):
 
             molecule_number = i
             nucleotide = char
             occupied.append(location)
-            print(f"protein{occupied}")
+
+            # make molecule object and add to molecules list
             molecule = Molecule(nucleotide, molecule_number, location, fold, self.size_data, occupied)
             self.molecules.append(molecule)
+
+            # make dictionary of molecule locations
             self.molecule_locations[str(location)] = molecule
     
+            # update location for next molecule
             location = copy.deepcopy(self.molecules[molecule_number].next_location)
 
             # set fold of the molecule
@@ -37,20 +42,21 @@ class Protein:
         
 
     def score():
-        # maak een tijdelijke kopie van moleculen dict
+        # make temporary copy of molecules dict
         temp_locations = copy.deepcopy(self.molecule_locations)
-        # loop over moleculen in eiwit
+        
+        # loop over molecules in protein
         for molecule in temp_locations:
             # note score if there is a possible binding
-            if molecule.nucleotide == "H" 
-                for i in range(surrounded_by(H))
+            if molecule.nucleotide == "H":
+                for i in range(surrounded_by(molecule, H))
                     self.stability -= 1
             
             # remove molecule from temporary dict to prevent double scores
             self.temp_locations.pop(molecule)
         pass
 
-    def surrounded_by(molecule):
+    def surrounded_by(molecule, nucleotide):
         surrounded_by = 0
         fold_directions = [-1, 1]
         for i in fold_directions:
