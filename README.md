@@ -1,6 +1,8 @@
 # Protein Impossible
 Programmingtheorie project for team protein impossible in which we are trying to solve the "Protein pow(d)er case.
 
+voor runnen eerst installeer matplotlib door dit in terminal te runnen: 
+"python -m pip install -U pip" en "python -m pip install -U matplotlib"
 
 # RadioRussia
 TODO

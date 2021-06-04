@@ -49,26 +49,24 @@ class Protein:
         for molecule in temp_locations:
             # note score if there is a possible binding
             if molecule.nucleotide == "H":
-                for i in range(surrounded_by(molecule, H))
+                for i in range(surrounded_by(molecule, H)):
                     self.stability -= 1
             
             # remove molecule from temporary dict to prevent double scores
             self.temp_locations.pop(molecule)
-        pass
 
     def surrounded_by(molecule, nucleotide):
         surrounded_by = 0
         fold_directions = [-1, 1]
         for i in fold_directions:
-            if 
-         # for every richting (rechts, links, boven, onder)
-            # check if location +/- 1 is not in dict
-            # check if location +/- 2 is in dict
-            # als allebei de checks, add location +/- 2 to bindingenlist
-
-        # return bindingen list
-        pass
             
 
-    
-    
+                if self.molecule_locations[location].molecule.nucleotide == nucleotide:
+                    surrounded_by += 1
+            # for every richting (rechts, links, boven, onder)
+                # check if location +/- 1 is not in dict
+                # check if location +/- 2 is in dict
+                # als allebei de checks, add location +/- 2 to bindingenlist
+
+            # return bindingen list
+        

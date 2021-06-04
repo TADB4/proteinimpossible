@@ -17,5 +17,5 @@ if __name__ == "__main__":
     
     test = 'test'
     print("test1")
-    visualise(test)
+    visualise.make_plot(test)
 
