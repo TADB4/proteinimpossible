@@ -14,14 +14,14 @@ X_MAX = 10
 Y_MIN = -10
 Y_MAX = 10
 
-print("test 2")
+# print("test 2")
 
 def make_plot(protein):
-    print("TEST3")
+    # print("TEST3")
     # testdata
     protein = protein
     protein_dict = protein.occupied
-
+    #print(protein_dict)
     # make plot
     fig = plt.figure()
     ax = fig.add_subplot()
@@ -34,14 +34,14 @@ def make_plot(protein):
     ax.axis([X_MIN, X_MAX, Y_MIN, Y_MAX])
 
     # loop over molecules of the protein
-    for item in protein_dict:
+    for i, item in enumerate(protein_dict):
         # obtain x and y values
-        item_list = item.split(",")
-        x_value = item_list[0]
-        y_value = item_list[1]
+        item_list = protein_dict[i] #item.split(",")
+        x_value = int(item_list[0])
+        y_value = int(item_list[1])
 
         # print nucleotide at correct location
-        ax.plot(x_value, y_value, protein_dict[item])
+        ax.plot(x_value, y_value, protein_dict[i])
 
     # save figure
     plt.savefig("test")

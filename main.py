@@ -16,6 +16,6 @@ if __name__ == "__main__":
         print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
     
     test = Example
-    print("test1")
+  
     visualise.make_plot(test)
 

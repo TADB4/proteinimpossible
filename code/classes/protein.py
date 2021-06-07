@@ -1,4 +1,3 @@
-
 from .molecule import Molecule
 import copy
 
@@ -7,8 +6,9 @@ class Protein:
         self.molecules = []
         self.data = data
         self.size_data= len(data)
-        self.molecule_locations = {"Location":[], "Molecule":[]}
+        self.molecule_locations = {}
         self.stability = 0
+        self.occupied = []
         
         self.create_protein()
         self.score()
@@ -19,7 +19,8 @@ class Protein:
         self.molecule_number = None
         location = [0, 0]
         fold = 0
-        occupied = []
+
+        occupied = self.occupied
 
         # loop over nucleotides of the data and add info to molecule object
         for i, char in enumerate(self.data):
@@ -32,46 +33,60 @@ class Protein:
             molecule = Molecule(nucleotide, molecule_number, location, fold, self.size_data, occupied)
             self.molecules.append(molecule)
 
-            # make dictionary of molecule locations
-            self.molecule_locations[str(location)] = molecule
+            # add molecule to dictionary of molecule locations
+            self.molecule_locations[tuple(location)] = molecule
     
             # update location for next molecule
             location = copy.deepcopy(self.molecules[molecule_number].next_location)
 
-            # set fold of the molecule
+            # update fold for next molecule
             fold = copy.deepcopy(self.molecules[molecule_number].next_fold)
         
 
     def score(self):
-        # # loop over molecules in protein
-        # for location in self.molecule_locations:
-        #     # note score if there is a possible binding
-        #     molecule = self.molecule_locations[location]
-        #     if molecule.nucleotide == "H":
-        #         for i in range(surrounded_by(molecule, H)):
-        #             self.stability -= 1
-        # print(self.stability)
-        pass
+        # loop over molecules in protein
+        for location in self.molecule_locations:
+            # note score if there is a possible binding
+            molecule = self.molecule_locations[location]
 
-    # def surrounded_by(molecule, nucleotide):
-    #     surrounded_by = 0
-    #     fold_directions = [-1, 1]
-    #     #checks for unbound neigbours on bound sides
-    #     for folds in fold_directions:
-    #         location_neigbour = molecule.location[0] + folds
+            # calculate how often H is surrounded by H
+            if molecule.nucleotide == "H":
+                self.stability = self.stability - 1 * self.surrounded_by(molecule, "H") #- self.surrounded_by(molecule, "C")
+                print("stabiliteit:", self.stability)
 
-    #         if self.molecule_locations[location_neigbour] in self.molecule_locations:
-    #             nucleotide_neighbour = self.molecule_locations[location_neigbour].molecule.nucleotide
+    def surrounded_by(self, molecule, nucleotide):
+        surrounded_by = 0
+        fold_directions = [0, 1]
 
-    #             if nucleotide_neighbour == nucleotide:
-    #                 surrounded_by += 1
-    #     surrounded_by = surrounded_by/2
-    #     return surrounded_by
-        pass
-            # for every richting (rechts, links, boven, onder)
-                # check if location +/- 1 is not in dict
-                # check if location +/- 2 is in dict
-                # als allebei de checks, add location +/- 2 to bindingenlist
+        # checks for unbound neigbours on bound sides
+        for folds in fold_directions:
+            location_neighbour = molecule.location
+            location_neighbour[folds] = molecule.location[folds] + 1
+            location_neighbour = tuple(location_neighbour)
+            
+            # checks wether bound to neigbour
+            if self.neigbour_is_not_bound(molecule, location_neighbour) == True:
 
-            # return bindingen list
+                # if there is a neighbour at that location, assign to variable
+                if tuple(location_neighbour) in self.molecule_locations:
+                    nucleotide_neighbour = self.molecule_locations[location_neighbour].nucleotide
+                    if nucleotide_neighbour == nucleotide:
+                        surrounded_by += 1
+
+        return surrounded_by
+
+
+    def neigbour_is_not_bound(self, molecule, location_neighbour):
+        # checks if neighbour in the grid is not bound with a regular bound
+        if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
+            return False
+        elif molecule.molecule_number != self.size_data - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
+            return False
+        elif molecule.molecule_number == 0 or molecule.molecule_number == self.size_data - 1:
+            return False
+        else:
+            return True
+                
+        
+    
         
