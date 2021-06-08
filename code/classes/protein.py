@@ -9,7 +9,6 @@ class Protein:
         self.molecule_locations = {}
         self.stability = 0
         self.occupied = []
-        
         self.create_protein()
         self.score()
 
@@ -49,9 +48,12 @@ class Protein:
             # note score if there is a possible binding
             molecule = self.molecule_locations[loc]
             
-            # calculate how often H is surrounded by H
+            # calculate how often H is surrounded by H or C
             if molecule.nucleotide == "H":
-                self.stability = self.stability + (- 1 * self.surrounded_by(molecule, "H")) #- self.surrounded_by(molecule, "C")
+                self.stability = self.stability + (-1 * self.surrounded_by(molecule, "H")) + (-1 * self.surrounded_by(molecule, "C"))
+            # calculate how often H is surrounded by C
+            elif molecule.nucleotide == "C":
+                self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C"))
 
  
     def surrounded_by(self, molecule, nucleotide):
@@ -64,7 +66,7 @@ class Protein:
             location_neighbour[folds] = copy.deepcopy(molecule.location[folds]) + 1
             location_neighbour = tuple(location_neighbour)
             
-            # checks wether bound to neighbour
+            # checks wether molecule is bound to neighbour
             if self.neighbour_is_not_bound(molecule, location_neighbour) == True:
 
                 # if there is a neighbour at that location, assign to variable

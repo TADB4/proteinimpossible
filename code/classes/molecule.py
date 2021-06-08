@@ -1,4 +1,5 @@
-import random
+
+from code.algorithms import formula
 import copy
 
 class Molecule:
@@ -10,10 +11,8 @@ class Molecule:
         self.size_data = size_data
         self.occupied = occupied
         self.terminate = False
-
         self.next_fold = 0 #self.create_fold()
         self.next_location =  [0,0] #self.assign_location()
-        
         self.create_fold()
         
         
@@ -21,6 +20,7 @@ class Molecule:
         # set fold types
         types = [-2, -1 , 1, 2]
         
+
         # keeps it from immediately folding back on itself
         if self.fold != 0:
             types.remove(self.fold*-1)
@@ -34,7 +34,7 @@ class Molecule:
             # try locations until a not-occupied location is found and not all folds are checked
             while try_location in self.occupied and types:
                 # choose random fold
-                current_type = random.choice(types)
+                current_type = formula.Random_pick(types)
                 self.next_fold = current_type
 
                 # remove current fold from types to prevent using the same fold
