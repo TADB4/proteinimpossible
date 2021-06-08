@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt 
 from code.classes import protein, molecule
 
+
 X_MIN = -5
 X_MAX = 5
 Y_MIN = -5

@@ -5,7 +5,7 @@ class Protein:
     def __init__(self, data):
         self.molecules = []
         self.data = data
-        self.size_data= len(data)
+        self.size_data = len(data)
         self.molecule_locations = {}
         self.stability = 0
         self.occupied = []
