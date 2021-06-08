@@ -83,8 +83,8 @@ class Protein:
             return False
         elif molecule.molecule_number != self.size_data - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
             return False
-        elif molecule.molecule_number == 0 or molecule.molecule_number == self.size_data - 1:
-            return False
+        # elif molecule.molecule_number == 0 or molecule.molecule_number == self.size_data - 1:
+        #     return False
         else:
             return True
                 
