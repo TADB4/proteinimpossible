@@ -10,9 +10,10 @@ class Molecule:
         self.location = location
         self.size_data = size_data
         self.occupied = occupied
-        self.terminate = False
-        self.next_fold = 0 #self.create_fold()
-        self.next_location =  [0,0] #self.assign_location()
+        self.next_fold = 0 
+        self.next_location =  [0,0] 
+
+        # picks where to fold the next molecule to
         self.create_fold()
         
         
@@ -20,10 +21,9 @@ class Molecule:
         # set fold types
         types = [-2, -1 , 1, 2]
         
-
         # keeps it from immediately folding back on itself
         if self.fold != 0:
-            types.remove(self.fold*-1)
+            types.remove(self.fold * -1)
 
         # assign a fold of 0 for the last molecule
         if self.molecule_number == self.size_data - 1:
@@ -39,7 +39,9 @@ class Molecule:
 
                 # remove current fold from types to prevent using the same fold
                 types.remove(current_type)
-                
+                if not types:
+                    return print("protein folded in itself")
+
                 # check if location is possible 
                 try_location = self.assign_location()
 
