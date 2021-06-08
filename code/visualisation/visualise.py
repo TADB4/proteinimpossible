@@ -7,9 +7,8 @@
 
 import matplotlib
 import matplotlib.pyplot as plt 
+import matplotlib.lines as mlines
 from code.classes import protein, molecule
-
-# print("test 2")
 
 def make_plot(protein):
     protein = protein
@@ -53,11 +52,24 @@ def make_plot(protein):
         else:
             ax.plot(x_value, y_value, 'go')
 
+        # remember x and y values
         x_values.append(x_value)
         y_values.append(y_value)
     
-    # print lines
-    ax.plot(x_values, y_values)
+    # print connecting lines
+    ax.plot(x_values, y_values, color='grey')
+
+    # add legend
+    blue = mlines.Line2D([], [], color='blue', marker='o',
+            markersize=10, label='H')
+    red = mlines.Line2D([], [], color='red', marker='o',
+            markersize=10, label='P')
+    green = mlines.Line2D([], [], color='green', marker='o',
+            markersize=10, label='C')
+    ax.legend(handles=[blue, red, green])
+
+    # remove axes
+    ax.axis('off')
 
     # save figure
     plt.savefig("test")
