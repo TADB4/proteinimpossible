@@ -45,38 +45,37 @@ class Protein:
 
     def score(self):
         # loop over molecules in protein
-        for location in self.molecule_locations:
+        for loc in self.molecule_locations:
             # note score if there is a possible binding
-            molecule = self.molecule_locations[location]
-
+            molecule = self.molecule_locations[loc]
+            
             # calculate how often H is surrounded by H
             if molecule.nucleotide == "H":
-                self.stability = self.stability - 1 * self.surrounded_by(molecule, "H") #- self.surrounded_by(molecule, "C")
-                print("stabiliteit:", self.stability)
+                self.stability = self.stability + (- 1 * self.surrounded_by(molecule, "H")) #- self.surrounded_by(molecule, "C")
 
+ 
     def surrounded_by(self, molecule, nucleotide):
         surrounded_by = 0
         fold_directions = [0, 1]
 
-        # checks for unbound neigbours on bound sides
+        # checks for unbound neighbours on bound sides
         for folds in fold_directions:
-            location_neighbour = molecule.location
-            location_neighbour[folds] = molecule.location[folds] + 1
+            location_neighbour = copy.deepcopy(molecule.location)
+            location_neighbour[folds] = copy.deepcopy(molecule.location[folds]) + 1
             location_neighbour = tuple(location_neighbour)
             
-            # checks wether bound to neigbour
-            if self.neigbour_is_not_bound(molecule, location_neighbour) == True:
+            # checks wether bound to neighbour
+            if self.neighbour_is_not_bound(molecule, location_neighbour) == True:
 
                 # if there is a neighbour at that location, assign to variable
                 if tuple(location_neighbour) in self.molecule_locations:
                     nucleotide_neighbour = self.molecule_locations[location_neighbour].nucleotide
                     if nucleotide_neighbour == nucleotide:
                         surrounded_by += 1
-
         return surrounded_by
 
 
-    def neigbour_is_not_bound(self, molecule, location_neighbour):
+    def neighbour_is_not_bound(self, molecule, location_neighbour):
         # checks if neighbour in the grid is not bound with a regular bound
         if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
             return False
