@@ -31,7 +31,7 @@ The following list describes the most important maps and files in this project, 
 - **/data**: contains the nucloetide order of the different proteins which can be built and visualised
 - **/doc**: contains a visual representation of the used datastructure
 
-## Autors
+## Authors
 - Tim de Boer
 - Nick Tennekes
 - Sofie Peeters

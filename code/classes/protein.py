@@ -58,7 +58,7 @@ class Protein:
                 self.stability = self.stability + (-1 * self.surrounded_by(molecule, "H")) + (-1 * self.surrounded_by(molecule, "C"))
             # calculate how often H is surrounded by C
             elif molecule.nucleotide == "C":
-                self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C"))
+                self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C")) + (-1 * self.surrounded_by(molecule, "H"))
 
  
     def surrounded_by(self, molecule, nucleotide):

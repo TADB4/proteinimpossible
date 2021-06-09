@@ -11,7 +11,7 @@ class Molecule:
         self.size_data = size_data
         self.occupied = occupied
         self.next_fold = 0 
-        self.next_location =  [0,0] 
+        self.next_location = [0,0] 
 
         # picks where to fold the next molecule to
         self.create_fold()
