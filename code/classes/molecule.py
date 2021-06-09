@@ -12,6 +12,7 @@ class Molecule:
         self.occupied = occupied
         self.next_fold = 0 
         self.next_location = [0,0] 
+        self.terminate = False
 
         # picks where to fold the next molecule to
         self.create_fold()
@@ -20,19 +21,23 @@ class Molecule:
         '''
         Test if a new location is possible
         '''
-        try_location = [0,0]
+        try_location = [0, 0]
         
         # try locations until a not-occupied location is found and not all folds are checked
         while try_location in self.occupied and types:
             # choose random fold
             current_type = randomise.Random_pick(types)
-            self.next_fold = current_type
+            
+            # tells protein it has no valid way to fold
+            if not types:
+                print("protein folded in itself")
+                self.terminate = True
+                return
 
             # remove current fold from types to prevent using the same fold
             types.remove(current_type)
-            if not types:
-                return print("protein folded in itself")
 
+            self.next_fold = current_type
             # check if location is possible 
             try_location = self.assign_location()
 
@@ -42,7 +47,7 @@ class Molecule:
             # if location is possible, use location
             else:
                 self.next_location = try_location
-                return True
+                return 
 
         
     def create_fold(self):
@@ -58,7 +63,7 @@ class Molecule:
 
         # assign a fold of 0 for the last molecule
         if self.molecule_number == self.size_data - 1:
-            return 0
+            return
         # assign a random fold for the rest of the molecules
         else:
             self.tryout_new_location(types)

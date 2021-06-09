@@ -32,6 +32,11 @@ class Protein:
 
             # make molecule object and add to molecules list
             molecule = Molecule(nucleotide, molecule_number, location, fold, self.size_data, occupied)
+
+            # restarts function when protein blocked itself of
+            if molecule.terminate == True:
+                self.create_protein()
+
             self.molecules.append(molecule)
 
             # add molecule to dictionary of molecule locations

@@ -30,6 +30,7 @@ The following list describes the most important maps and files in this project, 
   - **/code/visualisation**: contains the matplotlib code for the visualisation
 - **/data**: contains the nucloetide order of the different proteins which can be built and visualised
 - **/doc**: contains a visual representation of the used datastructure
+- **/results**: here the output.csvs and png's wil put when running the program
 
 ## Authors
 - Tim de Boer
