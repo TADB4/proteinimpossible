@@ -13,7 +13,9 @@ class Protein:
         self.score()
 
     def create_protein(self):
-        # keeps creating molecules until the protein is finished
+        '''
+        Keeps creating molecules until the protein is finished
+        '''
         self.nucleotide = None
         self.molecule_number = None
         location = [0, 0]
@@ -43,9 +45,12 @@ class Protein:
         
 
     def score(self):
+        '''
+        Calculate score of a protein
+        '''
         # loop over molecules in protein
         for loc in self.molecule_locations:
-            # note score if there is a possible binding
+            # select molecule 
             molecule = self.molecule_locations[loc]
             
             # calculate how often H is surrounded by H or C
@@ -57,6 +62,9 @@ class Protein:
 
  
     def surrounded_by(self, molecule, nucleotide):
+        '''
+        Determine which molecules are directly surrounding the current molecule
+        '''
         surrounded_by = 0
         fold_directions = [0, 1]
 
@@ -78,13 +86,15 @@ class Protein:
 
 
     def neighbour_is_not_bound(self, molecule, location_neighbour):
-        # checks if neighbour in the grid is not bound with a regular bound
+        '''
+        Checks if neighbour is not bound to the molecule
+        '''
+        # unless it's the starting molecule checks if it's the molecule bound from
         if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
             return False
+        # unless it's the last molecule checks if it's the molecule binding to
         elif molecule.molecule_number != self.size_data - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
             return False
-        # elif molecule.molecule_number == 0 or molecule.molecule_number == self.size_data - 1:
-        #     return False
         else:
             return True
                 
