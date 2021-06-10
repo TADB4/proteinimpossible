@@ -1,5 +1,5 @@
 
-from code.algorithms import randomise
+from code.algorithms import randomise, greedy
 import copy
 
 class Molecule:
@@ -24,22 +24,27 @@ class Molecule:
         try_location = [0, 0]
         
         # try locations until a not-occupied location is found and not all folds are checked
-        while try_location in self.occupied and types:
-            # choose random fold
-            current_type = randomise.Random_pick(types)
-            
-            # tells protein it has no valid way to fold
-            if not types:
+        while try_location in self.occupied: #and types:
+# tells protein it has no valid way to fold
+            if len(types) == 0:
                 print("protein folded in itself")
                 self.terminate = True
                 return
 
+            # choose random fold
+            # current_type = greedy.Compact(types, occupied)
+            current_type = randomise.Random_pick(types)
+            print(types)
+            
             # remove current fold from types to prevent using the same fold
             types.remove(current_type)
 
             self.next_fold = current_type
+            
             # check if location is possible 
-            try_location = self.assign_location()
+            try_location = self.assign_location(current_type)
+
+            self.next_fold = current_type
 
             # if location is not possible, try next fold
             if try_location in self.occupied:
@@ -69,22 +74,22 @@ class Molecule:
             self.tryout_new_location(types)
             
             
-    def assign_location(self):   
+    def assign_location(self, fold):   
         '''
         Assign the location of a new molecule based on the fold
         '''  
         new_value = copy.deepcopy(self.location)
         
         # change location value based on fold
-        if self.next_fold == 1:
+        if fold == 1:
             new_value[0] += 1
-        elif self.next_fold == -1:
+        elif fold == -1:
             new_value[0] -= 1
-        elif self.next_fold == 2:
+        elif fold == 2:
             new_value[1] += 1
-        elif self.next_fold == -2:
+        elif fold == -2:
             new_value[1] -= 1
-            
+        
         return new_value
 
 

@@ -35,6 +35,11 @@ class Protein:
 
             # restarts function when protein blocked itself of
             if molecule.terminate == True:
+                print("Restart")
+
+                location = [0, 0]
+                fold = 0
+                self.occupied = []
                 self.create_protein()
 
             self.molecules.append(molecule)

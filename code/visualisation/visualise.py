@@ -87,7 +87,7 @@ def make_plot(protein, protein_counter):
     ax.text(axes[0] + 1, axes[2] + 1, (f'score: {protein.stability}'))
 
     # remove axes
-    ax.axis('off')
+    # ax.axis('off')
 
     file_name = "test_" + str(protein_counter)
     # locals()[file_name] = current_protein
