@@ -1,12 +1,14 @@
 from code.classes import protein, molecule
 from code.visualisation import visualise
+# from code.algorithms import randomise, greedy, hillclimber, antcolony
 import csv
 from statistics import mean
 
 if __name__ == "__main__":
     # promt user for sequence
     data = str(input("Insert sequence here: "))
-    times = int(input("How many tries? "))
+    # algorithm = str(input("Which algorithm would you like to use? "))
+    times = int(input("How many times do you want to run the algorithm? "))
 
     csv_rows_baseline = []
     
@@ -19,9 +21,12 @@ if __name__ == "__main__":
         # initialize protein class
         current_protein = protein.Protein(data)
 
-        for molecule in current_protein.molecules:
-            #print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
-
+        for loc in current_protein.occupied:
+            # PROTEIN CHECK:
+            # print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
+            
+            molecule = current_protein.molecule_locations[tuple(loc)]
+            
             # add aminoacids and folds to csv rows
             csv_rows.append([molecule.nucleotide, molecule.next_fold])
 

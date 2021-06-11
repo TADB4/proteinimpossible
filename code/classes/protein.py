@@ -3,23 +3,23 @@ import copy
 
 class Protein:
     def __init__(self, data):
-        self.molecules = []
-        self.data = data
-        self.size_data = len(data)
-        self.molecule_locations = {}
+        self.data = data # input string of nucleotide sequence
+        self.molecule_locations = {} # key locations, value: molecule class
+        self.occupied = [] # locations in order of assignment
         self.stability = 0
-        self.occupied = []
         self.create_protein()
-        self.score()
+        # checken of een plek vrij is hoort meer bij protein (occupied)
 
     def create_protein(self):
         '''
-        Keeps creating molecules until the protein is finished
+        Keeps creating molecules until a correct protein is finished
         '''
         while self.try_protein() == False:
             self.clear_protein()
 
-    
+        self.score()   
+
+
     def try_protein(self):
         '''
         Tries to create a protein one time and returns false if protein 
@@ -36,23 +36,23 @@ class Protein:
             self.occupied.append(location)
             
             # make molecule object and add to molecules list
-            molecule = Molecule(nucleotide, molecule_number, location, fold, self.size_data, self.occupied)
+            molecule = Molecule(nucleotide, molecule_number, location, fold, len(self.data), self.occupied)
 
             # restarts function when protein blocked itself of
             if molecule.terminate == True:
                 print("Restart:", molecule.location)
                 return False
             else:
-                self.molecules.append(molecule)
-
                 # add molecule to dictionary of molecule locations
                 self.molecule_locations[tuple(location)] = molecule
-            
+
+                current_loc = tuple(self.occupied[molecule_number])
+
                 # update location for next molecule
-                location = copy.deepcopy(self.molecules[molecule_number].next_location)
+                location = copy.deepcopy(self.molecule_locations[current_loc].next_location)
 
                 # update fold for next molecule
-                fold = copy.deepcopy(self.molecules[molecule_number].next_fold)
+                fold = copy.deepcopy(self.molecule_locations[current_loc].next_fold)
         return True
         
     
@@ -61,8 +61,7 @@ class Protein:
         Clear information of this protein
         '''
         list.clear(self.occupied)
-        dict.clear(self.molecule_locations)
-        list.clear(self.molecules)     
+        dict.clear(self.molecule_locations)   
 
 
     def score(self):
@@ -81,6 +80,7 @@ class Protein:
             elif molecule.nucleotide == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C")) + (-1 * self.surrounded_by(molecule, "H"))
  
+
     def surrounded_by(self, molecule, nucleotide):
         '''
         Determine which molecules are directly surrounding the current molecule
@@ -103,6 +103,7 @@ class Protein:
                         surrounded_by += 1
         return surrounded_by
 
+
     def neighbour_is_not_bound(self, molecule, location_neighbour):
         '''
         Checks if neighbour is not bound to the molecule
@@ -110,12 +111,12 @@ class Protein:
         # unless it's the starting molecule checks if it's the molecule bound from
         if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
             return False
+            self.molecule_locations[location].molecule_number - 1
         # unless it's the last molecule checks if it's the molecule binding to
-        elif molecule.molecule_number != self.size_data - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
+        elif molecule.molecule_number != len(self.data) - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
             return False
         else:
             return True
                 
         
     
-        
