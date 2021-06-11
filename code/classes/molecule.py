@@ -1,21 +1,20 @@
-from code.algorithms import randomise, greedy
+
 import copy
 
 class Molecule:
-    def __init__(self, nucleotide, molecule_number, location, fold, size_data, occupied):
+    def __init__(self, nucleotide, molecule_number, location, fold): #,size_data, occupied):
         self.nucleotide = nucleotide
         self.molecule_number = molecule_number
         self.fold = fold
         self.location = location
-        self.size_data = size_data
-        self.occupied = occupied
-        self.next_fold = 0 
-        self.next_location = [0,0] 
-        self.terminate = False
+        #self.size_data = size_data
+        #self.occupied = occupied
+        #self.next_fold = 0 
+        #self.next_location = [0,0] # betere naam evt: next step?
+        #self.terminate = False
 
         # picks where to fold the next molecule to
-        self.create_fold()
-
+        #self.create_fold()
 
     def tryout_new_location(self, types):
         '''
@@ -52,28 +51,26 @@ class Molecule:
             else:
                 self.next_location = try_location
                 return 
-
+  
+    # def create_fold(self):
+    #     '''
+    #     Picks a fold for the next molecule
+    #     '''
+    #     # set fold types
+    #     types = [-2, -1 , 1, 2]
         
-    def create_fold(self):
-        '''
-        Picks a fold for the next molecule
-        '''
-        # set fold types
-        types = [-2, -1 , 1, 2]
-        
-        # keeps it from immediately folding back on itself
-        if self.fold != 0:
-            types.remove(self.fold * -1)
+    #     # keeps it from immediately folding back on itself
+    #     if self.fold != 0:
+    #         types.remove(self.fold * -1)
 
-        # assign a fold of 0 for the last molecule
-        if self.molecule_number == self.size_data - 1:
-            return
-        # assign a random fold for the rest of the molecules
-        else:
-            #return types
-            self.tryout_new_location(types)
-            
-            
+    #     # assign a fold of 0 for the last molecule
+    #     if self.molecule_number == self.size_data - 1:
+    #         return
+    #     # assign a random fold for the rest of the molecules
+    #     else:
+    #         #return types
+    #         self.tryout_new_location(types)
+                   
     def assign_location(self, fold):   
         '''
         Assign the location of a new molecule based on the fold

@@ -8,6 +8,7 @@ class Protein:
         self.occupied = [] # locations in order of assignment
         self.stability = 0
         self.create_protein()
+        self.terminate = False
         # checken of een plek vrij is hoort meer bij protein (occupied)
 
     def create_protein(self):
@@ -16,9 +17,8 @@ class Protein:
         '''
         while self.try_protein() == False:
             self.clear_protein()
-
-        self.score()   
-
+    
+        #self.score()   
 
     def try_protein(self):
         '''
@@ -32,37 +32,103 @@ class Protein:
         for i, char in enumerate(self.data):
 
             molecule_number = i
-            nucleotide = char
-            self.occupied.append(location)
+            nucleotide = char   
             
             # make molecule object and add to molecules list
-            molecule = Molecule(nucleotide, molecule_number, location, fold, len(self.data), self.occupied)
+            molecule = Molecule(nucleotide, molecule_number, location, fold)#, len(self.data), self.occupied)
+            self.occupied.append(molecule.location)
 
-            # restarts function when protein blocked itself of
-            if molecule.terminate == True:
-                print("Restart:", molecule.location)
-                return False
-            else:
-                # add molecule to dictionary of molecule locations
-                self.molecule_locations[tuple(location)] = molecule
+            # add molecule to dictionary of molecule locations
+            self.molecule_locations[tuple(molecule.location)] = molecule
 
-                current_loc = tuple(self.occupied[molecule_number])
-
-                # update location for next molecule
-                location = copy.deepcopy(self.molecule_locations[current_loc].next_location)
-
-                # update fold for next molecule
-                fold = copy.deepcopy(self.molecule_locations[current_loc].next_fold)
-        return True
+            # make a line orientation as default
+            location = [0, len(self.data) + i]
         
+        return 
+            
+        #     # ------------------- vanaf hier in randomise
+            
+        #     # folds the next molecule
+        #     self.create_fold(molecule)
+
+        #     # restarts function when protein blocked itself of
+        #     if self.terminate == True:
+        #         print("Restart, collision on:", molecule.location)
+        #         return False
+        #     else:
+        #         current_loc = tuple(self.occupied[molecule_number])
+
+        #         # update location for next molecule
+        #         location = copy.deepcopy(self.molecule_locations[current_loc].next_location)
+
+        #         # update fold for next molecule
+        #         fold = copy.deepcopy(self.molecule_locations[current_loc].next_fold)
+        # return True
+              
+    # NEW FUNCTION
+    def create_fold(self, molecule):
+        '''
+        Picks a fold for the next molecule
+        '''
+        # assign a fold of 0 for the last molecule
+        if molecule.molecule_number == molecule.size_data - 1:
+            return
+        # assign a random fold for the rest of the molecules
+        else:
+            #return types
+            self.tryout_new_location()
+
+    # NEW FUNCTION
+    def tryout_new_location(self):
+        '''
+        Test if a new location is possible
+        '''
+        # set fold types
+        types = [-2, -1 , 1, 2]
+        
+        # keeps it from immediately folding back on itself
+        if molecule.fold != 0:
+            types.remove(molecule.fold * -1)
+        try_location = [0, 0]
+        
+        # try locations until a not-occupied location is found and not all folds are checked
+        while try_location in self.occupied: #and types:
+            # tells protein it has no valid way to fold
+            if len(types) == 0:
+                print("protein folded in itself")
+                self.terminate = True
+                return
+
+            # choose random fold
+            # current_type = greedy.Greedy(types, occupied)
+            current_type = 2
+            #randomise.Random_pick(types)
+            
+            # remove current fold from types to prevent using the same fold
+            types.remove(current_type)
+
+            self.next_fold = current_type
+            
+            # check if location is possible 
+            try_location = self.assign_location(current_type)
+
+            self.next_fold = current_type
+
+            # if location is not possible, try next fold
+            if try_location in self.occupied:
+                continue
+            # if location is possible, use location
+            else:
+                self.next_location = try_location
+                return        
     
     def clear_protein(self): 
         '''
         Clear information of this protein
         '''
         list.clear(self.occupied)
-        dict.clear(self.molecule_locations)   
-
+        dict.clear(self.molecule_locations) 
+        self.terminate = False   
 
     def score(self):
         '''
@@ -80,7 +146,6 @@ class Protein:
             elif molecule.nucleotide == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C")) + (-1 * self.surrounded_by(molecule, "H"))
  
-
     def surrounded_by(self, molecule, nucleotide):
         '''
         Determine which molecules are directly surrounding the current molecule
@@ -103,7 +168,6 @@ class Protein:
                         surrounded_by += 1
         return surrounded_by
 
-
     def neighbour_is_not_bound(self, molecule, location_neighbour):
         '''
         Checks if neighbour is not bound to the molecule
@@ -119,4 +183,5 @@ class Protein:
             return True
                 
         
+    
     
