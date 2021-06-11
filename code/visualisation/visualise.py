@@ -41,9 +41,6 @@ def make_plot(protein, protein_counter):
     ax = fig.add_subplot()
     fig.subplots_adjust(top=0.85)
 
-    # adjust graph size to length of the protein
-    # max_length = protein.size_data + 1
-
     # set title
     fig.suptitle('Protein representation', fontsize=14, fontweight='bold')
 
@@ -90,7 +87,6 @@ def make_plot(protein, protein_counter):
     # ax.axis('off')
 
     file_name = "test_" + str(protein_counter)
-    # locals()[file_name] = current_protein
 
     file_location = 'results/' + file_name
 

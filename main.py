@@ -24,11 +24,9 @@ if __name__ == "__main__":
         csv_rows.append(['amino','fold'])
         
         # loop over molecules
-        for loc in current_protein.occupied:
+        for molecule in current_protein.molecules:
             # PROTEIN CHECK:
             # print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
-            
-            molecule = current_protein.molecule_locations[tuple(loc)]
             
             # add aminoacids and folds to csv rows
             csv_rows.append([molecule.nucleotide, molecule.next_fold])

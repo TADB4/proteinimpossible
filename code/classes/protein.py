@@ -4,7 +4,8 @@ import copy
 class Protein:
     def __init__(self, data):
         self.data = data # input string of nucleotide sequence
-        self.molecule_locations = {} # key locations, value: molecule class
+        # self.molecule_locations = {} # key locations, value: molecule class
+        self.molecules = []
         self.occupied = [] # locations in order of assignment
         self.stability = 0
         self.create_protein()
@@ -37,9 +38,9 @@ class Protein:
             # make molecule object and add to molecules list
             molecule = Molecule(nucleotide, molecule_number, location, fold)#, len(self.data), self.occupied)
             self.occupied.append(molecule.location)
-
+            self.molecules.append(molecule)
             # add molecule to dictionary of molecule locations
-            self.molecule_locations[tuple(molecule.location)] = molecule
+            #self.molecule_locations[tuple(molecule.location)] = molecule
 
             # make a line orientation as default
             location = [0, len(self.data) + i]
@@ -127,7 +128,8 @@ class Protein:
         Clear information of this protein
         '''
         list.clear(self.occupied)
-        dict.clear(self.molecule_locations) 
+        list.clear(self.molecules)
+        # dict.clear(self.molecule_locations) 
         self.terminate = False   
 
     def score(self):
@@ -135,9 +137,9 @@ class Protein:
         Calculate score of a protein
         '''
         # loop over molecules in protein
-        for loc in self.molecule_locations:
+        for molecule in self.molecules:
             # select molecule 
-            molecule = self.molecule_locations[loc]
+            #molecule = self.molecule_locations[loc]
             
             # calculate how often H is surrounded by H or C
             if molecule.nucleotide == "H":
@@ -161,9 +163,10 @@ class Protein:
             
             # checks wether molecule is bound to neighbour
             if self.neighbour_is_not_bound(molecule, location_neighbour) == True:
+                
                 # if there is a neighbour at that location, assign to variable
-                if tuple(location_neighbour) in self.molecule_locations:
-                    nucleotide_neighbour = self.molecule_locations[location_neighbour].nucleotide
+                if tuple(location_neighbour) in self.occupied:
+                    nucleotide_neighbour = self.molecules[molecule.molecule_number].nucleotide
                     if nucleotide_neighbour == nucleotide:
                         surrounded_by += 1
         return surrounded_by
@@ -175,7 +178,7 @@ class Protein:
         # unless it's the starting molecule checks if it's the molecule bound from
         if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
             return False
-            self.molecule_locations[location].molecule_number - 1
+            self.molecules[molecule.molecule_number].molecule_number - 1
         # unless it's the last molecule checks if it's the molecule binding to
         elif molecule.molecule_number != len(self.data) - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
             return False
