@@ -19,7 +19,6 @@ if __name__ == "__main__":
         # initialize protein class
         current_protein = protein.Protein(data)
 
-        # TEST: print each nucleotide and details
         for molecule in current_protein.molecules:
             #print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
 
@@ -41,8 +40,17 @@ if __name__ == "__main__":
         visualise.make_plot(current_protein, protein_counter)
     
     # export csv file for baseline results
-    file_name = 'results/baseline_scores.csv'
-    visualise.write_csv_rows(file_name, csv_rows_baseline)
+    visualise.write_csv_rows('results/baseline_scores.csv', csv_rows_baseline)
+
+    # NIEUWE STRUCTUUR:
+    # greedy roept protein aan (bijv geef volgende vouw opties functie)
+    # protein roept molecule aan
+
+    # in protein kan een rechte lijn met alleen protein volgorde gebouwd worden, en dat
+    # de fold later wordt aangepast door een bepaald algoritme
+
+    # houd de molecuul zo dat hij echt alleen de molecuul data kent
+
 
 
 
