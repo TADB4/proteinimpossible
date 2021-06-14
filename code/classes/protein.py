@@ -52,28 +52,13 @@ class Protein:
         '''
         Tests if a new location is possible
         '''
-        # set fold types
-        # types = [-2, -1 , 1, 2]
-        
-        # keeps it from immediately folding back on itself
-        # if molecule.fold != 0:
-        #     types.remove(molecule.fold * -1)
         try_location = [0, 0]
         
         # try locations until a not-occupied location is found and not all folds are checked
         while try_location in self.occupied:
 
-            # # tells protein it has no valid way to fold
-            # if len(types) == 0:
-            #     print("protein folded in itself")
-            #     self.terminate = True
-            #     return
-
-            # kee
+            # folds north everytime
             current_type = 2
-            
-            # remove current fold from types to prevent using the same fold
-            #types.remove(current_type)
             
             # check if location is possible 
             try_location = self.assign_location(current_type)
@@ -86,13 +71,11 @@ class Protein:
                 self.next_location = try_location
                 return        
     
-    # def clear_protein(self): 
-    #     '''
-    #     Clear information of this protein
-    #     '''
-    #     list.clear(self.occupied)
-    #     list.clear(self.molecules)
-    #     self.terminate = False   
+    def clear_protein(self): 
+        '''
+        Clear information of this protein
+        '''
+        list.clear(self.occupied)
 
     def score(self):
         '''
