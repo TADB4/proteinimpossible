@@ -166,8 +166,10 @@ class Protein:
                 
                 # if there is a neighbour at that location, assign to variable
                 if tuple(location_neighbour) in self.occupied:
+                    print()
                     nucleotide_neighbour = self.molecules[molecule.molecule_number].nucleotide
                     if nucleotide_neighbour == nucleotide:
+
                         surrounded_by += 1
         return surrounded_by
 
@@ -177,12 +179,15 @@ class Protein:
         '''
         # unless it's the starting molecule checks if it's the molecule bound from
         if molecule.molecule_number != 0 and tuple(self.occupied[molecule.molecule_number - 1]) == location_neighbour:
+            print("not_bound 1 loc: ",(self.occupied[molecule.molecule_number - 1]),"neighbour: ", location_neighbour )
             return False
             self.molecules[molecule.molecule_number].molecule_number - 1
         # unless it's the last molecule checks if it's the molecule binding to
         elif molecule.molecule_number != len(self.data) - 1 and tuple(self.occupied[molecule.molecule_number + 1]) == location_neighbour: 
+            print("not_bound 2 loc: ", (self.occupied[molecule.molecule_number - 1]),"neighbour: ", location_neighbour )
             return False
         else:
+            print("not_bound 3")
             return True
                 
         

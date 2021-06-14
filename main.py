@@ -29,7 +29,7 @@ if __name__ == "__main__":
             # print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
             
             # add aminoacids and folds to csv rows
-            csv_rows.append([molecule.nucleotide, molecule.next_fold])
+            csv_rows.append([molecule.nucleotide, molecule.fold])
 
         # STABILITY CHECK:
         # print(f"stability: {current_protein.stability}")
@@ -44,6 +44,7 @@ if __name__ == "__main__":
         file_name = 'results/output_file' + str(protein_counter) + '.csv'
         visualise.write_csv_rows(file_name, csv_rows)
 
+        # make the protein visualisation plot
         visualise.make_plot(current_protein, protein_counter)
     
     # export csv file for baseline results

@@ -33,8 +33,6 @@ def make_plot(protein, protein_counter):
     Visualisation code that plots a protein using matplotlib
     '''
     print("Loading visualisation...")
-
-    protein_dict = protein.molecule_locations
     
     # make plot
     fig = plt.figure()
@@ -51,15 +49,15 @@ def make_plot(protein, protein_counter):
     x_values = []
     y_values = []
 
-    for item in protein_dict:
-        # obtain x and y values
+    for i, item in enumerate(protein.occupied):
+        # obtain x and y values to remember for lines
         x_value = int(item[0])
         y_value = int(item[1])
 
         # print nucleotide at correct location with correct color
-        if protein_dict[item].nucleotide == "H":
+        if protein.molecules[i].nucleotide == "H":
             ax.plot(x_value, y_value, 'bo')
-        elif protein_dict[item].nucleotide == "P":
+        elif protein.molecules[i].nucleotide == "P":
             ax.plot(x_value, y_value, 'ro')
         else:
             ax.plot(x_value, y_value, 'go')
@@ -86,9 +84,7 @@ def make_plot(protein, protein_counter):
     # remove axes
     # ax.axis('off')
 
-    file_name = "test_" + str(protein_counter)
-
-    file_location = 'results/' + file_name
+    file_location = 'results/test_' + str(protein_counter)
 
     # save figure
     plt.savefig(file_location)
