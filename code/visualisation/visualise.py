@@ -84,13 +84,16 @@ def make_plot(protein, protein_counter):
     # remove axes
     # ax.axis('off')
 
-    file_location = 'results/test_' + str(protein_counter)
+    # save with unique file name
+    # file_location = 'results/test_' + str(protein_counter)
+
+    # save with best file name (overwrite last best protein)
+    file_location = 'results/best'
 
     # save figure
     plt.savefig(file_location)
 
 def write_csv_rows(file_name, rows):
-
     # open file in write mode
     with open(file_name, 'w', newline='') as f:
 
