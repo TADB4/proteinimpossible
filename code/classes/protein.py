@@ -82,18 +82,13 @@ class Protein:
         Calculate score of a protein
         '''
         # loop over molecules in protein
-        print("molecules in score:", len(self.molecules))
-        
         for molecule in self.molecules:
-            print(molecule.molecule_number,"before: ", self.stability)
             # calculate how often H is surrounded by H or C
             if molecule.nucleotide == "H":
                 self.stability = self.stability + (-1 * self.surrounded_by(molecule, "H")) + (-1 * self.surrounded_by(molecule, "C"))
             # calculate how often H is surrounded by C
             elif molecule.nucleotide == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(molecule, "C")) + (-1 * self.surrounded_by(molecule, "H"))
-
-            print(molecule.molecule_number, "after: ", self.stability)
 
     def surrounded_by(self, molecule, nucleotide):
         '''
@@ -113,8 +108,7 @@ class Protein:
                 if location_neighbour in self.occupied:
                     nucleotide_neighbour = self.molecules[self.occupied.index(location_neighbour)].nucleotide
                     if nucleotide_neighbour == nucleotide:
-                        surrounded_by += 1      
-        print(molecule.nucleotide, surrounded_by, nucleotide)         
+                        surrounded_by += 1             
         return surrounded_by
 
     def neighbour_is_not_bound(self, molecule, location_neighbour):

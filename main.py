@@ -17,14 +17,20 @@ if __name__ == "__main__":
 
         # initialize protein class
 
-        """
-         # Greedy
-        greedy_object = greedy.Greedy(data)
-        current_protein = greedy_object.protein
-        """
+        
         # Random
         random_object = randomise.Randomise(data)
         current_protein = random_object.protein
+        
+        """
+        # Greedy
+        greedy_object = greedy.Greedy(data)
+        current_protein = greedy_object.protein
+        """
+
+
+        # count score
+        protein.Protein.score(current_protein)
         
         # make csv rows and add first line of output csv file
         csv_rows = []
