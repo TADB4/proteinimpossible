@@ -94,6 +94,8 @@ def make_plot(protein, protein_counter):
     plt.savefig(file_location)
 
 def write_csv_rows(file_name, rows):
+    print("loading csv...")
+
     # open file in write mode
     with open(file_name, 'w', newline='') as f:
 

@@ -11,26 +11,29 @@ if __name__ == "__main__":
     times = int(input("How many times do you want to run the algorithm? "))
 
     csv_rows_baseline = []
-    highest_stability = 0
+    highest_stability = 1
     
     for protein_counter in range(0, times):
 
-        # initialize protein class
+        # print at every 100 proteins
+        if protein_counter%100 == 0:
+            print("making protein nr", protein_counter)
 
-        
+        """
         # Random
         random_object = randomise.Randomise(data)
         current_protein = random_object.protein
-        
         """
+        
+        
         # Greedy
         greedy_object = greedy.Greedy(data)
         current_protein = greedy_object.protein
-        """
-
-
+        
         # count score
+        #print("calculate score...")
         protein.Protein.score(current_protein)
+        #print("stability: ", current_protein.stability)
         
         # make csv rows and add first line of output csv file
         csv_rows = []
@@ -60,7 +63,7 @@ if __name__ == "__main__":
             visualise.make_plot(current_protein, protein_counter)
 
             # make output csv file 
-            file_name = 'results/output_best.csv'
+            file_name = 'results/output.csv'
             visualise.write_csv_rows(file_name, csv_rows)
 
             highest_stability = copy.deepcopy(current_protein.stability)
