@@ -1,10 +1,10 @@
-from .molecule import Molecule
+from .aminoacid import Aminoacid
 import copy
 
 class Protein:
     def __init__(self, data):
         self.data = data # input string of nucleotide sequence
-        self.molecules = []
+        self.aminoacids = []
         self.occupied = [] # locations in order of assignment
         self.stability = 0
         self.terminate = False
@@ -12,7 +12,7 @@ class Protein:
         
     def create_protein(self):
         '''
-        Keeps creating molecules until a correct protein is finished
+        Keeps creating aminoacids until a correct protein is finished
         '''
         while self.try_protein() == False:
             self.clear_protein()
@@ -25,25 +25,25 @@ class Protein:
         location = [0, 0]
         fold = 0
         
-        # loop over nucleotides of the data and add info to molecule object
+        # loop over nucleotides of the data and add info to aminoacids object
         for i, char in enumerate(self.data):
-            molecule_number = i
+            aminoacid_number = i
             nucleotide = char   
             
-            # make molecule object and add to molecules list
-            molecule = Molecule(nucleotide, molecule_number, location, fold)
-            self.occupied.append(molecule.location)
-            self.molecules.append(molecule)
+            # make aminoacid object and add to aminoacids list
+            aminoacid = Aminoacid(nucleotide, aminoacid_number, location, fold)
+            self.occupied.append(aminoacid.location)
+            self.aminoacids.append(aminoacid)
 
             # make a line orientation as default
             location = [0, len(self.data) + i]
         return 
               
-    def create_fold(self, molecule):
+    def create_fold(self, aminoacid):
         '''
-        Picks a fold for the next molecule
+        Picks a fold for the next aminoacid
         '''
-        if molecule.molecule_number == molecule.size_data - 1:
+        if aminoacid.aminoacid_number == aminoacid.size_data - 1:
             return
         else:
             self.tryout_new_location()
@@ -81,19 +81,19 @@ class Protein:
         '''
         Calculate score of a protein
         '''
-        # loop over molecules in protein
-        for molecule in self.molecules:
+        # loop over aminoacids in protein
+        for aminoacid in self.aminoacids:
             # calculate how often H is surrounded by H or C
-            if molecule.nucleotide == "H":
-                self.stability = self.stability + (-1 * self.surrounded_by(molecule.location, "H", molecule.molecule_number)) + (-1 * self.surrounded_by(molecule.location, "C", molecule.molecule_number))
+            if aminoacid.nucleotide == "H":
+                self.stability = self.stability + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number))
             # calculate how often H is surrounded by C
-            elif molecule.nucleotide == "C":
-                self.stability = self.stability + (-5 * self.surrounded_by(molecule.location, "C", molecule.molecule_number)) + (-1 * self.surrounded_by(molecule.location, "H", molecule.molecule_number))
+            elif aminoacid.nucleotide == "C":
+                self.stability = self.stability + (-5 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number))
         self.stability = self.stability/2
         
-    def surrounded_by(self, molecule_location, nucleotide, molecule_number):
+    def surrounded_by(self, aminoacid_location, nucleotide, aminoacid_number):
         '''
-        Determine which molecules are directly surrounding the current molecule
+        Determine which aminoacids are directly surrounding the current aminoacid
         '''
         surrounded_by = 0
         fold_directions = [0, 1]
@@ -101,32 +101,32 @@ class Protein:
 
         # checks for unbound neighbours for x and y
         for folds in fold_directions:
-            location_neighbour = copy.deepcopy(molecule_location)
+            location_neighbour = copy.deepcopy(aminoacid_location)
 
             # checks negative and positive directions
             for value in neg_pos:
                 # save neighbour location
-                location_neighbour[folds] = copy.deepcopy(molecule_location[folds]) + value
+                location_neighbour[folds] = copy.deepcopy(aminoacid_location[folds]) + value
                 
-                # checks wether molecule is bound to neighbour
-                if self.neighbour_is_not_bound(molecule_number, location_neighbour) == True:
+                # checks wether aminoacid is bound to neighbour
+                if self.neighbour_is_not_bound(aminoacid_number, location_neighbour) == True:
                     # if there is a neighbour at that location, assign to variable
                     if location_neighbour in self.occupied:
-                        nucleotide_neighbour = self.molecules[self.occupied.index(location_neighbour)].nucleotide
+                        nucleotide_neighbour = self.aminoacids[self.occupied.index(location_neighbour)].nucleotide
                         if nucleotide_neighbour == nucleotide:
                             surrounded_by += 1             
         return surrounded_by
 
-    def neighbour_is_not_bound(self, molecule_number, location_neighbour):
+    def neighbour_is_not_bound(self, aminoacid_number, location_neighbour):
         '''
-        Checks if neighbour is not bound to the molecule
+        Checks if neighbour is not bound to the aminoacid
         '''
-        # unless it's the starting molecule checks if it's the molecule bound from
-        if molecule_number != 0 and self.occupied[molecule_number - 1] == location_neighbour:
+        # unless it's the starting aminoacid checks if it's the aminoacid bound from
+        if aminoacid_number != 0 and self.occupied[aminoacid_number - 1] == location_neighbour:
             return False
-            self.molecules[molecule_number].molecule_number - 1
-        # unless it's the last molecule checks if it's the molecule binding to
-        elif molecule_number != len(self.data) - 1 and self.occupied[molecule_number + 1] == location_neighbour: 
+            self.aminoacids[aminoacid_number].aminoacid_number - 1
+        # unless it's the last aminoacid checks if it's the aminoacid binding to
+        elif aminoacid_number != len(self.data) - 1 and self.occupied[aminoacid_number + 1] == location_neighbour: 
             return False
         else:
             return True

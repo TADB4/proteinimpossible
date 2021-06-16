@@ -1,7 +1,7 @@
 import matplotlib
 import matplotlib.pyplot as plt 
 import matplotlib.lines as mlines
-from code.classes import protein, molecule
+from code.classes import protein, aminoacid
 import csv
 
 def calculate_axis(protein):
@@ -55,9 +55,9 @@ def make_plot(protein, protein_counter):
         y_value = int(item[1])
 
         # print nucleotide at correct location with correct color
-        if protein.molecules[i].nucleotide == "H":
+        if protein.aminoacids[i].nucleotide == "H":
             ax.plot(x_value, y_value, 'bo')
-        elif protein.molecules[i].nucleotide == "P":
+        elif protein.aminoacids[i].nucleotide == "P":
             ax.plot(x_value, y_value, 'ro')
         else:
             ax.plot(x_value, y_value, 'go')
