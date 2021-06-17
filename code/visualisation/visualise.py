@@ -5,9 +5,9 @@ from code.classes import protein, aminoacid
 import csv
 
 def calculate_axis(protein):
-    '''
+    """
     Calculates the minimum and maximum score of x and y to correctly adjust the size of the plot
-    '''
+    """
     x_min, x_max, y_min, y_max = 0, 0, 0, 0
 
     # remember the highest and lowest x and y values
@@ -29,11 +29,12 @@ def calculate_axis(protein):
     return [x_min, x_max, y_min, y_max]
 
 def make_plot(protein, protein_counter):
-    '''
+    """
     Visualisation code that plots a protein using matplotlib
-    '''
-    print("Loading visualisation...")
+    """
     
+    print("loading csv...")
+
     # make plot
     fig = plt.figure()
     ax = fig.add_subplot()
@@ -94,7 +95,6 @@ def make_plot(protein, protein_counter):
     plt.savefig(file_location)
 
 def write_csv_rows(file_name, rows):
-    print("loading csv...")
 
     # open file in write mode
     with open(file_name, 'w', newline='') as f:

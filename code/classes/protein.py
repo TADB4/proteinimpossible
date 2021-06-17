@@ -11,17 +11,17 @@ class Protein:
         self.create_protein()
         
     def create_protein(self):
-        '''
+        """
         Keeps creating aminoacids until a correct protein is finished
-        '''
+        """
         while self.try_protein() == False:
             self.clear_protein()
 
     def try_protein(self):
-        '''
+        """
         Tries to create a protein one time and returns false if protein 
         folds on itself
-        '''
+        """
         location = [0, 0]
         fold = 0
         
@@ -40,18 +40,18 @@ class Protein:
         return 
               
     def create_fold(self, aminoacid):
-        '''
+        """
         Picks a fold for the next aminoacid
-        '''
+        """
         if aminoacid.aminoacid_number == aminoacid.size_data - 1:
             return
         else:
             self.tryout_new_location()
 
     def tryout_new_location(self):
-        '''
+        """
         Tests if a new location is possible
-        '''
+        """
         try_location = [0, 0]
         
         # try locations until a not-occupied location is found and not all folds are checked
@@ -72,15 +72,15 @@ class Protein:
                 return        
     
     def clear_protein(self): 
-        '''
+        """
         Clear information of this protein
-        '''
+        """
         list.clear(self.occupied)
 
     def score(self):
-        '''
+        """
         Calculate score of a protein
-        '''
+        """
         # loop over aminoacids in protein
         for aminoacid in self.aminoacids:
             # calculate how often H is surrounded by H or C
@@ -92,9 +92,9 @@ class Protein:
         self.stability = self.stability/2
         
     def surrounded_by(self, aminoacid_location, nucleotide, aminoacid_number):
-        '''
+        """
         Determine which aminoacids are directly surrounding the current aminoacid
-        '''
+        """
         surrounded_by = 0
         fold_directions = [0, 1]
         neg_pos = [1, -1]
@@ -118,9 +118,9 @@ class Protein:
         return surrounded_by
 
     def neighbour_is_not_bound(self, aminoacid_number, location_neighbour):
-        '''
+        """
         Checks if neighbour is not bound to the aminoacid
-        '''
+        """
         # unless it's the starting aminoacid checks if it's the aminoacid bound from
         if aminoacid_number != 0 and self.occupied[aminoacid_number - 1] == location_neighbour:
             return False

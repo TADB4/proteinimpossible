@@ -9,18 +9,18 @@ class Randomise():
         self.change_protein()
 
     def change_protein(self):
-        '''
+        """
         Change a protein: add folds and calculate score
-        '''
+        """
         # try folds until a possible fold is found
         while self.add_folds() == False:
             Protein.clear_protein(self.protein)
             Randomise.__init__(self, self.data)
 
     def add_folds(self):
-        '''
+        """
         Adds folds to an existing aminoacid sequence
-        '''
+        """
         for aminoacid in self.protein.aminoacids:
             # folds the next aminoacid
             self.create_fold(aminoacid)
@@ -33,9 +33,9 @@ class Randomise():
         return True
 
     def create_fold(self, aminoacid):
-        '''
+        """
         Picks a fold for the next aminoacid
-        '''
+        """
         # assign a fold of 0 for the last aminoacid
         if aminoacid.aminoacid_number == len(self.data) - 1:
             return
@@ -45,9 +45,9 @@ class Randomise():
             self.tryout_new_location(aminoacid)
 
     def tryout_new_location(self, aminoacid):
-        '''
+        """
         Test if a new location is possible
-        '''
+        """
         # set ways of folding 
         folds = [-2, -1 , 1, 2]
             
@@ -85,9 +85,9 @@ class Randomise():
                 return           
             
     def assign_location(self, location, fold):   
-        '''
+        """
         Assign the location of a new aminoacid based on the fold
-        '''  
+        """  
         new_value = copy.deepcopy(location)
         
         # change location value based on fold
