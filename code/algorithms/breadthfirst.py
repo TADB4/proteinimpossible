@@ -33,52 +33,57 @@ class Breadthfirst:
             state_list = state.split(",")
             state_list.pop()
 
-            print("depth: ", depth)
-            print("state, state_list en self.states: ", len(state), len(state_list), len(self.states))
+            # *** create starting molecule
 
-            # add only state options that have the length of the whole protein
-            if len(state_list) == depth-1:
-                print("in if *********")
-                self.states.append(state_list)
-                print("self.states if:", self.states)
-                                                            #create starting molecule
-            if len(state) < depth:
-                print("len self.states: ", len(state))
+            # breadth first algorithm
+            if len(state_list) < depth - 1:
                 # make copy of this state for each option
                 for i in ["-2", "-1", "1", "2"]:
                     child = copy.deepcopy(state)
                     child += i
+                    # *** evt probeer eiwit hier
                     queue.put(child + ",")
-        
-        print("self.states:", self.states)
+            else:
+                self.states.append(state_list)
+                
+                      
+        print("self.states:", len(self.states))
 
-    def try_every_fold(self):
-        """
-        Tests all states of folding
-        """
-        # loop over every state of states
-        for state in states:
-            # make a protein without folds
-            protein = Protein(data)
+    # def try_every_fold(self):
+    #     """
+    #     Tests all states of folding
+    #     """
+    #     possible_proteins = []
+
+    #     # loop over every state of states
+    #     for state in states:
+    #         # make a protein without folds
+    #         protein = Protein(data)
+
+    #         # start location
+    #         current_location = [0,0]
             
-            # loop over aminoacids of protein 
-            for i, aminoacid in enumerate(protein.aminoacids):
-                # calculate future location with this fold
-                # assign_location(current_location, fold)
+    #         # loop over aminoacids of protein 
+    #         for i, aminoacid in enumerate(protein.aminoacids):
+    #             fold = state[i]
 
-                # if future_location not in occupied:
-                    # fold this aminoacid with the corresponding fold 
-                    # aminoacid.fold = state[i] 
-                    # use assign_location?
-                    # update (current) location, occupied etc.
+    #             # calculate future location with this fold
+    #             future_location = self.assign_location(current_location, fold)
 
-                # else:
-                    # go to next state
+    #             # if location is free, fold aminoacid and update information
+    #             if future_location not in protein.occupied:
+    #                 aminoacid.fold = fold
+    #                 aminoacid.location = future_location
+    #                 protein.occupied.append(future_location)
+    #                 current_location = future_location
+    #             else:
+    #                 break 
 
-            # save this (state of the) protein
-            # calculate score of this protein 
+    #         # save this (state of the) protein
+    #         possible_proteins
+    #         # calculate score of this protein 
         
-        pass
+    #     pass
 
 
     # def assign_location(self, location, fold):   
@@ -98,3 +103,10 @@ class Breadthfirst:
     #         new_value[1] -= 1
         
     #     return new_value        
+
+
+    # tips van bas:
+    # states niet als self variable maar als return
+    # later toepassen: 
+        # gelijk testen of deze state kan en al gaan vouwen, zodat je daaropvolgende states kan elimineren (prunen)
+        # kijken of dit sneller is dan alles testen

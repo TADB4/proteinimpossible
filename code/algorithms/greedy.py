@@ -83,7 +83,7 @@ class Greedy():
 
     def check_potential_fold(self, fold, possible_loc, aminoacid, neighbours_folds):
         """
-        Check if this 
+        Count total neighbours of a fold
         """
             
         nucleotides = ['H', 'P', 'C']
