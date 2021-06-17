@@ -46,7 +46,6 @@ class Greedy:
             #return folds
             self.select_best_fold(aminoacid)
 
-    # OLD FUNCTION:
     def select_best_fold(self, aminoacid):
         # set ways of folding 
         fold_options = [2, 1, -1, -2]

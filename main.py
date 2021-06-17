@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     algorithm = "greedy"
     # while algorithm != "randomise" or "greedy":
-    #     algorithm = str(input("Which algorithm would you like to use? [randomise, greedy]: "))
+    algorithm = str(input("Which algorithm would you like to use? [randomise, greedy]: "))
 
     times = int(input("How many times do you want to run the algorithm? "))
 
@@ -24,11 +24,11 @@ if __name__ == "__main__":
             print("making protein nr", protein_counter)
 
         # execute random or greedy algorithm
-        if algorithm == "randomise":
+        if algorithm == str(randomise):
             # Random
             random_object = randomise.Randomise(data)
             current_protein = random_object.protein
-        elif algorithm == "greedy":
+        elif algorithm == str(greedy):
             # Greedy
             greedy_object = greedy.Greedy(data)
             current_protein = greedy_object.protein
