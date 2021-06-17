@@ -19,16 +19,16 @@ if __name__ == "__main__":
         if protein_counter%100 == 0:
             print("making protein nr", protein_counter)
 
-        """
+        
         # Random
         random_object = randomise.Randomise(data)
         current_protein = random_object.protein
+        
         """
-        
-        
         # Greedy
         greedy_object = greedy.Greedy(data)
         current_protein = greedy_object.protein
+        """
         
         # count score
         #print("calculate score...")
