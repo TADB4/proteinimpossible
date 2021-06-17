@@ -9,15 +9,8 @@ if __name__ == "__main__":
     # promt user for sequence
     data = str(input("Insert sequence here: "))
 
-<<<<<<< HEAD
-    algorithm = "greedy"
-    # while algorithm != "randomise" or "greedy":
-    algorithm = str(input("Which algorithm would you like to use? [randomise, greedy]: "))
-
-=======
     algorithm = "breadthfirst"
    
->>>>>>> 42cd9637da31383fdff1458a363400ae02044170
     times = int(input("How many times do you want to run the algorithm? "))
 
     csv_rows_baseline = []
@@ -32,21 +25,11 @@ if __name__ == "__main__":
             print("Making protein nr", protein_counter)
             print("Runtime: %s seconds" % (time.time() - start_time))
 
-<<<<<<< HEAD
-        # execute random or greedy algorithm
-        if algorithm == str(randomise):
-            # Random
-            random_object = randomise.Randomise(data)
-            current_protein = random_object.protein
-        elif algorithm == str(greedy):
-            # Greedy
-=======
         # execute random/greedy/breadthfirst algorithm
         if algorithm == "randomise":
             random_object = randomise.Randomise(data)
             current_protein = random_object.protein
         elif algorithm == "greedy":
->>>>>>> 42cd9637da31383fdff1458a363400ae02044170
             greedy_object = greedy.Greedy(data)
             current_protein = greedy_object.protein
         elif algorithm == "breadthfirst":
