@@ -1,4 +1,4 @@
-from code.classes import protein, molecule
+from code.classes import protein, aminoacid
 from code.visualisation import visualise
 from code.algorithms import randomise, greedy
 import copy
@@ -7,7 +7,11 @@ import csv
 if __name__ == "__main__":
     # promt user for sequence
     data = str(input("Insert sequence here: "))
-    # algorithm = str(input("Which algorithm would you like to use? [none, randomise, greedy, hillclimber] "))
+
+    algorithm = "greedy"
+    # while algorithm != "randomise" or "greedy":
+    #     algorithm = str(input("Which algorithm would you like to use? [randomise, greedy]: "))
+
     times = int(input("How many times do you want to run the algorithm? "))
 
     csv_rows_baseline = []
@@ -19,17 +23,16 @@ if __name__ == "__main__":
         if protein_counter%100 == 0:
             print("making protein nr", protein_counter)
 
-        
-        # Random
-        random_object = randomise.Randomise(data)
-        current_protein = random_object.protein
-        
-        """
-        # Greedy
-        greedy_object = greedy.Greedy(data)
-        current_protein = greedy_object.protein
-        """
-        
+        # execute random or greedy algorithm
+        if algorithm == "randomise":
+            # Random
+            random_object = randomise.Randomise(data)
+            current_protein = random_object.protein
+        elif algorithm == "greedy":
+            # Greedy
+            greedy_object = greedy.Greedy(data)
+            current_protein = greedy_object.protein
+
         # count score
         #print("calculate score...")
         protein.Protein.score(current_protein)
@@ -39,13 +42,13 @@ if __name__ == "__main__":
         csv_rows = []
         csv_rows.append(['amino','fold'])
         
-        # loop over molecules
-        for molecule in current_protein.molecules:
+        # loop over aminoacids
+        for aminoacid in current_protein.aminoacids:
             # PROTEIN CHECK:
-            # print(f"nucleotide: {molecule.nucleotide}, molecule number: {molecule.molecule_number}, fold: {molecule.next_fold}, location: {molecule.location}")
+            # print(f"nucleotide: {aminoacid.nucleotide}, aminoacid number: {aminoacid.aminoacid_number}, fold: {aminoacid.next_fold}, location: {aminoacid.location}")
             
             # add aminoacids and folds to csv rows
-            csv_rows.append([molecule.nucleotide, molecule.fold])
+            csv_rows.append([aminoacid.nucleotide, aminoacid.fold])
 
         # add score to csv rows
         csv_rows.append(['score', current_protein.stability])
@@ -70,10 +73,3 @@ if __name__ == "__main__":
 
     # export csv file for baseline results
     visualise.write_csv_rows('results/baseline_scores.csv', csv_rows_baseline)
-
-
-
-
-
-
-

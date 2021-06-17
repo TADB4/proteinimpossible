@@ -20,34 +20,34 @@ class Greedy:
 
     def add_folds(self):
         '''
-        Adds folds to an existing molecule sequence
+        Adds folds to an existing aminoacid sequence
         '''
-        for molecule in self.protein.molecules:
-            # folds the next molecule
-            self.create_fold(molecule)
+        for aminoacid in self.protein.aminoacids:
+            # folds the next aminoacid
+            self.create_fold(aminoacid)
             
             # restarts function when protein blocked itself of
             if self.protein.terminate == True:
-                print("Protein folded in itself, collision on:", molecule.location, "creating new protein.")
+                print("Protein folded in itself, collision on:", aminoacid.location, "creating new protein.")
                 return False
 
         return True
 
-    def create_fold(self, molecule):
+    def create_fold(self, aminoacid):
         '''
-        Picks a fold for the next molecule
+        Picks a fold for the next aminoacid
         COPIED FROM RANDOMISE
         '''
-        # assign a fold of 0 for the last molecule
-        if molecule.molecule_number == len(self.data) - 1:
+        # assign a fold of 0 for the last aminoacid
+        if aminoacid.aminoacid_number == len(self.data) - 1:
             return
-        # assign a random fold for the rest of the molecules
+        # assign a random fold for the rest of the aminoacids
         else:
             #return folds
-            self.select_best_fold(molecule)
+            self.select_best_fold(aminoacid)
 
     # OLD FUNCTION:
-    def select_best_fold(self, molecule):
+    def select_best_fold(self, aminoacid):
         # set ways of folding 
         fold_options = [2, 1, -1, -2]
         folds = random.sample(fold_options, len(fold_options))
@@ -55,7 +55,7 @@ class Greedy:
         neighbours_folds = {}
 
         # current location 
-        location = molecule.location
+        location = aminoacid.location
         count = 0
         
         # check potential folds 
@@ -74,7 +74,7 @@ class Greedy:
             
             # count for each nucleotide how many it are a neighbour
             for nucleotide in nucleotides:
-                neighbours = Protein.surrounded_by(self.protein, possible_loc, nucleotide, molecule.molecule_number)
+                neighbours = Protein.surrounded_by(self.protein, possible_loc, nucleotide, aminoacid.aminoacid_number)
                 total_neighbours = total_neighbours + neighbours
 
             
@@ -84,19 +84,18 @@ class Greedy:
         if len(neighbours_folds) == 0:
             self.protein.terminate = True
 
-        
         # choose fold with highest amount of neighbours
         best_fold = max(neighbours_folds, key=neighbours_folds.get)
         
-        # update location information of this molecule
-        self.protein.occupied[molecule.molecule_number + 1] = self.assign_location(location, best_fold)
-        self.protein.molecules[molecule.molecule_number + 1].location = self.assign_location(location, best_fold)
-        self.protein.molecules[molecule.molecule_number + 1].fold = best_fold
+        # update location information of this aminoacid
+        self.protein.occupied[aminoacid.aminoacid_number + 1] = self.assign_location(location, best_fold)
+        self.protein.aminoacids[aminoacid.aminoacid_number + 1].location = self.assign_location(location, best_fold)
+        self.protein.aminoacids[aminoacid.aminoacid_number + 1].fold = best_fold
         return
 
     def assign_location(self, location, fold):   
         '''
-        Assign the location of a new molecule based on the fold
+        Assign the location of a new aminoacid based on the fold
         '''  
         new_value = copy.deepcopy(location)
 
