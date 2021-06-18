@@ -33,7 +33,7 @@ def make_plot(protein):
     Visualisation code that plots a protein using matplotlib
     """
     
-    print("loading csv...")
+    print("Loading visualisation...")
 
     # make plot
     fig = plt.figure()
@@ -89,7 +89,7 @@ def make_plot(protein):
     # file_location = 'results/test_' + str(protein_counter)
 
     # save with best file name (overwrite last best protein)
-    file_location = 'results/best'
+    file_location = 'results/bestprotein'
 
     # save figure
     plt.savefig(file_location)

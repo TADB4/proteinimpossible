@@ -86,10 +86,11 @@ class Protein:
             # calculate how often H is surrounded by H or C
             if aminoacid.nucleotide == "H":
                 self.stability = self.stability + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number))
-            # calculate how often H is surrounded by C
+            # calculate how often C is surrounded by H or C
             elif aminoacid.nucleotide == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number))
         self.stability = self.stability/2
+        return self.stability
         
     def surrounded_by(self, aminoacid_location, nucleotide, aminoacid_number):
         """
@@ -106,7 +107,9 @@ class Protein:
             # checks negative and positive directions
             for value in neg_pos:
                 # save neighbour location
+                print("voor fold: ", location_neighbour)
                 location_neighbour[folds] = copy.deepcopy(aminoacid_location[folds]) + value
+                print("na fold: ", location_neighbour)
                 
                 # checks wether aminoacid is bound to neighbour
                 if self.neighbour_is_not_bound(aminoacid_number, location_neighbour) == True:
@@ -114,7 +117,8 @@ class Protein:
                     if location_neighbour in self.occupied:
                         nucleotide_neighbour = self.aminoacids[self.occupied.index(location_neighbour)].nucleotide
                         if nucleotide_neighbour == nucleotide:
-                            surrounded_by += 1             
+                            surrounded_by += 1 
+        print("surrounded_by: ", surrounded_by, nucleotide, aminoacid_location)            
         return surrounded_by
 
     def neighbour_is_not_bound(self, aminoacid_number, location_neighbour):
@@ -122,9 +126,10 @@ class Protein:
         Checks if neighbour is not bound to the aminoacid
         """
         # unless it's the starting aminoacid checks if it's the aminoacid bound from
+        print("aminoacid number: ", aminoacid_number, "len selfdata: ", len(self.data))
+        print("selfoccupied aminoacid number + 1: ", self.occupied[aminoacid_number + 1], "location neighbour: ", location_neighbour)
         if aminoacid_number != 0 and self.occupied[aminoacid_number - 1] == location_neighbour:
             return False
-            self.aminoacids[aminoacid_number].aminoacid_number - 1
         # unless it's the last aminoacid checks if it's the aminoacid binding to
         elif aminoacid_number != len(self.data) - 1 and self.occupied[aminoacid_number + 1] == location_neighbour: 
             return False

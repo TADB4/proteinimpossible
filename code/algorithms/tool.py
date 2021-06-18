@@ -35,7 +35,6 @@ class Tool():
     def create_fold(self, aminoacid):
         """
         Picks a fold for the next aminoacid
-        COPIED FROM RANDOMISE
         """
         # assign a fold of 0 for the last aminoacid
         if aminoacid.aminoacid_number == len(self.data) - 1:
@@ -50,7 +49,8 @@ class Tool():
         Assign the location of a new aminoacid based on the fold
         """  
         new_value = copy.deepcopy(location)
-
+        fold = int(fold)
+        
         # change location value based on fold
         if fold == 1:
             new_value[0] += 1
