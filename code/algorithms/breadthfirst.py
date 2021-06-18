@@ -49,60 +49,57 @@ class Breadthfirst:
                       
         print("self.states:", len(self.states))
 
-    # def try_every_fold(self):
-    #     """
-    #     Tests all states of folding
-    #     """
-    #     possible_proteins = []
+    def try_every_fold(self):
+        """
+        Tests all states of folding
+        """
+        possible_proteins = []
 
-    #     # loop over every state of states
-    #     for state in states:
-    #         # make a protein without folds
-    #         protein = Protein(data)
+        # loop over every state of states
+        for state in states:
+            # make a protein without folds
+            protein = Protein(data)
 
-    #         # start location
-    #         current_location = [0,0]
+            # start location
+            current_location = [0,0]
             
-    #         # loop over aminoacids of protein 
-    #         for i, aminoacid in enumerate(protein.aminoacids):
-    #             fold = state[i]
+            # loop over aminoacids of protein 
+            for i, aminoacid in enumerate(protein.aminoacids):
+                fold = state[i]
 
-    #             # calculate future location with this fold
-    #             future_location = self.assign_location(current_location, fold)
+                # calculate future location with this fold
+                future_location = self.assign_location(current_location, fold)
 
-    #             # if location is free, fold aminoacid and update information
-    #             if future_location not in protein.occupied:
-    #                 aminoacid.fold = fold
-    #                 aminoacid.location = future_location
-    #                 protein.occupied.append(future_location)
-    #                 current_location = future_location
-    #             else:
-    #                 break 
+                # if location is free, fold aminoacid and update information
+                if future_location not in protein.occupied:
+                    aminoacid.fold = fold
+                    aminoacid.location = future_location
+                    protein.occupied.append(future_location)
+                    current_location = future_location
+                else:
+                    break 
 
-    #         # save this (state of the) protein
-    #         possible_proteins
-    #         # calculate score of this protein 
+            # save this (state of the) protein
+            possible_proteins.append(protein)        
+        pass
+    
+    def assign_location(self, location, fold):   
+        """
+        Assign the location of a new aminoacid based on the fold
+        """  
+        new_value = copy.deepcopy(location)
         
-    #     pass
-
-
-    # def assign_location(self, location, fold):   
-    #     """
-    #     Assign the location of a new aminoacid based on the fold
-    #     """  
-    #     new_value = copy.deepcopy(location)
+        # change location value based on fold
+        if fold == 1:
+            new_value[0] += 1
+        elif fold == -1:
+            new_value[0] -= 1
+        elif fold == 2:
+            new_value[1] += 1
+        elif fold == -2:
+            new_value[1] -= 1
         
-    #     # change location value based on fold
-    #     if fold == 1:
-    #         new_value[0] += 1
-    #     elif fold == -1:
-    #         new_value[0] -= 1
-    #     elif fold == 2:
-    #         new_value[1] += 1
-    #     elif fold == -2:
-    #         new_value[1] -= 1
-        
-    #     return new_value        
+        return new_value        
 
 
     # tips van bas:

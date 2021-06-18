@@ -28,7 +28,7 @@ def calculate_axis(protein):
 
     return [x_min, x_max, y_min, y_max]
 
-def make_plot(protein, protein_counter):
+def make_plot(protein):
     """
     Visualisation code that plots a protein using matplotlib
     """
