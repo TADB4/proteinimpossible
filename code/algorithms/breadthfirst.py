@@ -9,19 +9,7 @@ class Breadthfirst:
         self.csv_all_scores = []
         self.protein = Protein(data)
         self.potential_fold_order()
-        self.try_every_fold()
-
-        
-        #self.change_protein()
-
-    # def change_protein(self):
-    #     """
-    #     Change a protein: add folds and calculate score
-    #     """
-    #     # try folds until a possible fold is found
-    #     while self.add_folds() == False:
-    #         Protein.clear_protein(self.protein)
-    #         Breadthfirst.__init__(self, self.data)
+        self.try_every_fold()  
 
     def potential_fold_order(self):
         """
@@ -41,8 +29,6 @@ class Breadthfirst:
             if len(state_list) == depth -1:
                 state_list.append("0")
 
-            # *** create starting molecule
-
             # breadth first algorithm
             if len(state_list) < depth - 1:
                 # make copy of this state for each option
@@ -54,64 +40,73 @@ class Breadthfirst:
             else:
                 self.states.append(state_list)
         
-        
     def try_every_fold(self):
         """
         Tests all states of folding
         """
         possible_proteins = []
         best_stability = 0
-        #csv_all_scores = []
         best_protein = None
 
         # loop over every state of states
         for state in self.states:
 
             # make a protein without folds
-            protein = Protein(self.data)
-            self.protein = protein
+            self.protein = Protein(self.data)
             
             # start location
-            current_location = [0,0] 
+            current_location = [0,0]
 
+            # start csv output file
+            csv_rows = []
+            csv_rows.append(['amino','fold'])
+            
             # loop over aminoacids of protein 
-            for i, aminoacid in enumerate(protein.aminoacids):
+            for i, aminoacid in enumerate(self.protein.aminoacids):
+
+                # set location that is calculated with previous fold
+                aminoacid.location = current_location
+                self.protein.occupied[i] = copy.deepcopy(current_location)
+
                 fold = state[i]
+
+                # add fold to csv output file
+                csv_rows.append([aminoacid.nucleotide, fold])
             
                 # calculate future location with this fold
                 future_location = self.assign_location(current_location, fold)
                 
                 # if location is free, fold aminoacid and update information
-                if future_location not in protein.occupied:
+                if future_location not in self.protein.occupied:
                     aminoacid.fold = fold
-                    aminoacid.location = future_location
-                    protein.occupied[i + 1] = copy.deepcopy(future_location)
                     current_location = future_location
+
                 else:
                     break 
             else:
-                print("fold invalid")
                 continue
 
-            print(protein.score())
-            print(protein.occupied)
-            protein.stability = protein.stability
+            # calculate stability
+            self.protein.stability = self.protein.score()
+
+            # add score to csv rows
+            csv_rows.append(['score', self.protein.stability])
             
             # save this (state of the) protein
-            possible_proteins.append(protein)
+            possible_proteins.append(self.protein)
 
             # save score of this protein to the big csv file
-            self.csv_all_scores.append([protein.stability])
+            self.csv_all_scores.append([self.protein.stability])
 
             # if this protein has the best score, overwrite previous best protein
-            if int(protein.stability) < int(best_stability):
-                best_protein = protein
-                best_stability = protein.stability
-                print("New best value: ", best_stability)
+            if int(self.protein.stability) < int(best_stability):
+                best_protein = self.protein
+                best_stability = self.protein.stability
+                self.protein.csv_best_score = csv_rows
+                print("New best score:", self.protein.stability)
             
         # return the protein with the highest score
         self.protein = best_protein
-
     
     def assign_location(self, location, fold):   
         """

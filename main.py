@@ -39,7 +39,10 @@ if __name__ == "__main__":
     # make the protein visualisation plot
     visualise.make_plot(current_protein)
 
-    # make output csv file 
+    # make output csv file of best score
+    visualise.write_csv_rows('results/output.csv', current_protein.csv_best_score)
+
+    # make output csv file of all scores
     file_name = 'results/all_scores.csv'
     visualise.write_csv_rows(file_name, current_object.csv_all_scores)
 
