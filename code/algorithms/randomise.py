@@ -40,7 +40,7 @@ class Randomise(Tool):
             if try_location not in self.protein.occupied:
                 self.protein.occupied[aminoacid.aminoacid_number + 1] = try_location
                 self.protein.aminoacids[aminoacid.aminoacid_number + 1].location = try_location
-                self.protein.aminoacids[aminoacid.aminoacid_number + 1].fold = current_fold 
+                self.protein.aminoacids[aminoacid.aminoacid_number].fold = current_fold 
                 return  
                                    
 

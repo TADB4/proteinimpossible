@@ -46,32 +46,58 @@ if __name__ == "__main__":
 
     # promt user for sequence
     data = str(input("Insert sequence here: "))
-
-    # algorithm = "breadthfirst"
-   
-    # times = int(input("How many times do you want to run the algorithm? "))
     
-    # --------------------------- Random reassignment --------------------------
-    # **** normal version    
+    # --------------------------- Random OR Greedy x times --------------------------
+    a = input("What algorithm do you want to use? [randomise/greedy/breadthfirst] ")
+    # ---------------------- run Random / Greedy ----------------------
+    if a is 1 or 2:
+        times = int(input("How many times do you want to run the algorithm? "))
+        print("random greedy running")
+        if a == 1:
+            algorithm = 'randomise'
+        else:
+            algorithm = 'greedy'
+        outputs = run_algorithm(algorithm, times)
+        best_protein = outputs[0]
+        csv_best_score = outputs[1]
+        csv_all_scores = outputs[2]
+    # ---------------------- run Breadth first ----------------------
+    else:
+        print("breadfirst running")
+        start_time = time.time()
+        current_object = breadthfirst_pruning.Breadthfirst(data)
+        best_protein = current_object.protein
+        csv_best_score = best_protein.csv_best_score
+        csv_all_scores = current_object.csv_all_scores
+        print("Runtime: %s seconds" % (time.time() - start_time))
+
+    # ---------------------- Visualisation ----------------------
+    visualise.make_plot(best_protein)
+    visualise.write_csv_rows('results/output.csv', csv_best_score)
+    visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)
+
+
+
+    # -------------------- Old versions Random and Greedy -----------   
     # start_time = time.time()
     # current_object = randomise.Randomise(data)
     # current_protein = current_object.protein
     # print("Runtime: %s seconds" % (time.time() - start_time))
     # protein.Protein.score(current_protein)
-
-    # # **** Random / Greedy x times
-    # times = 100
-    # algorithm = 'greedy'
-    # outputs = run_algorithm(algorithm, times)
-    # best_protein = outputs[0]
-    # csv_best_score = outputs[1]
-    # csv_all_scores = outputs[2]
+    
+    # start_time = time.time()
+    # current_object = greedy.Greedy(data)
+    # current_protein = current_object.protein
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+    # protein.Protein.score(current_protein)
 
     # ------------------- Old random 100k code ( x sofie, niet verwijderen) --------------
     # start_time = time.time()
     # best_stability = 0
     # best_protein = None
     # csv_all_scores = []
+
+    
 
     # # run random algorithm x times
     # for counter in range(0, times):
@@ -94,27 +120,3 @@ if __name__ == "__main__":
     # csv_best_score.append(['score', int(best_protein.stability)])
 
     # print("Runtime: %s seconds" % (time.time() - start_time))
-
-
-    # --------------------------- Random Greedy ---------------------------------
-    # start_time = time.time()
-    # current_object = greedy.Greedy(data)
-    # current_protein = current_object.protein
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    # protein.Protein.score(current_protein)
-
-    # --------------------------- Breadth First --------------------------------
-    start_time = time.time()
-    #current_object = breadthfirst.Breadthfirst(data)
-    current_object = breadthfirst_pruning.Breadthfirst(data)
-
-    best_protein = current_object.protein
-    csv_best_score = best_protein.csv_best_score
-    csv_all_scores = current_object.csv_all_scores
-    print("Runtime: %s seconds" % (time.time() - start_time))
-
-    # ---------------------------- Visualisation -------------------------------
-    # make the protein visualisation plot
-    visualise.make_plot(best_protein)
-    visualise.write_csv_rows('results/output.csv', csv_best_score)
-    visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)

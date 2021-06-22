@@ -40,7 +40,7 @@ class Greedy(Tool):
         # update location information of this aminoacid
         self.protein.occupied[aminoacid.aminoacid_number + 1] = Tool.assign_location(self.protein, location, best_fold)
         self.protein.aminoacids[aminoacid.aminoacid_number + 1].location = Tool.assign_location(self.protein, location, best_fold)
-        self.protein.aminoacids[aminoacid.aminoacid_number + 1].fold = best_fold
+        self.protein.aminoacids[aminoacid.aminoacid_number].fold = best_fold
         return
 
     def check_potential_fold(self, fold, possible_loc, aminoacid, neighbours_folds):
