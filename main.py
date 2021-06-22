@@ -1,27 +1,100 @@
 from code.classes import protein, aminoacid
 from code.visualisation import visualise
-from code.algorithms import randomise, greedy, breadthfirst
+from code.algorithms import randomise, greedy, breadthfirst, breadthfirst_pruning
 import copy
 import csv
 import time
 
 if __name__ == "__main__":
+    # ------------- Function for running random and greedy algorithm -------------
+    def run_algorithm(algorithm, times):
+        """
+        Runs an algorithm x times and saves values needed for csv and visualisation export
+        """
+        start_time = time.time()
+        best_stability = 0
+        best_protein = None
+        csv_all_scores = []
+
+        # run random algorithm x times
+        for counter in range(0, times):
+            if algorithm == 'greedy':
+                current_object = greedy.Greedy(data)
+            else:
+                current_object = randomise.Randomise(data)
+
+            current_protein = current_object.protein
+            protein.Protein.score(current_protein)
+            csv_all_scores.append([current_protein.stability])
+
+            # if this protein has the best score, overwrite previous best protein
+            if int(current_protein.stability) < int(best_stability):
+                best_stability = current_protein.stability
+                best_protein = current_protein 
+                print("New best score:", current_protein.stability)
+
+        # make folds list for csv file
+        csv_best_score = []
+        csv_best_score.append(['amino', 'fold'])
+        for aminoacid in best_protein.aminoacids:
+            csv_best_score.append([aminoacid.nucleotide, aminoacid.fold])
+        csv_best_score.append(['score', int(best_protein.stability)])
+
+        print("Runtime: %s seconds" % (time.time() - start_time))
+
+        return [best_protein, csv_best_score, csv_all_scores]
+
     # promt user for sequence
     data = str(input("Insert sequence here: "))
 
     # algorithm = "breadthfirst"
    
     # times = int(input("How many times do you want to run the algorithm? "))
-
-    csv_rows_baseline = []
-    highest_stability = 1
     
     # --------------------------- Random reassignment --------------------------
+    # **** normal version    
     # start_time = time.time()
     # current_object = randomise.Randomise(data)
     # current_protein = current_object.protein
     # print("Runtime: %s seconds" % (time.time() - start_time))
     # protein.Protein.score(current_protein)
+
+    # # **** Random / Greedy x times
+    # times = 100
+    # algorithm = 'greedy'
+    # outputs = run_algorithm(algorithm, times)
+    # best_protein = outputs[0]
+    # csv_best_score = outputs[1]
+    # csv_all_scores = outputs[2]
+
+    # ------------------- Old random 100k code ( x sofie, niet verwijderen) --------------
+    # start_time = time.time()
+    # best_stability = 0
+    # best_protein = None
+    # csv_all_scores = []
+
+    # # run random algorithm x times
+    # for counter in range(0, times):
+    #     current_object = randomise.Randomise(data)
+    #     current_protein = current_object.protein
+    #     protein.Protein.score(current_protein)
+    #     csv_all_scores.append([current_protein.stability])
+
+    #     # if this protein has the best score, overwrite previous best protein
+    #     if int(current_protein.stability) < int(best_stability):
+    #         best_stability = current_protein.stability
+    #         best_protein = current_protein 
+    #         print("New best score:", current_protein.stability)
+
+    # # make folds list for csv file
+    # csv_best_score = []
+    # csv_best_score.append(['amino', 'fold'])
+    # for aminoacid in best_protein.aminoacids:
+    #     csv_best_score.append([aminoacid.nucleotide, aminoacid.fold])
+    # csv_best_score.append(['score', int(best_protein.stability)])
+
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+
 
     # --------------------------- Random Greedy ---------------------------------
     # start_time = time.time()
@@ -32,74 +105,16 @@ if __name__ == "__main__":
 
     # --------------------------- Breadth First --------------------------------
     start_time = time.time()
-    current_object = breadthfirst.Breadthfirst(data)
-    current_protein = current_object.protein
+    #current_object = breadthfirst.Breadthfirst(data)
+    current_object = breadthfirst_pruning.Breadthfirst(data)
+
+    best_protein = current_object.protein
+    csv_best_score = best_protein.csv_best_score
+    csv_all_scores = current_object.csv_all_scores
     print("Runtime: %s seconds" % (time.time() - start_time))
 
+    # ---------------------------- Visualisation -------------------------------
     # make the protein visualisation plot
-    visualise.make_plot(current_protein)
-
-    # make output csv file of best score
-    visualise.write_csv_rows('results/output.csv', current_protein.csv_best_score)
-
-    # make output csv file of all scores
-    file_name = 'results/all_scores.csv'
-    visualise.write_csv_rows(file_name, current_object.csv_all_scores)
-
-    # -----------hieronder niet gebruiken
-    #for protein_counter in range(0, times):
-
-        # print at every 100 proteins
-        # if protein_counter%100 == 0:
-        #     print("Making protein nr: ", protein_counter)
-        #     print("Runtime: %s seconds" % (time.time() - start_time))
-
-        # execute random/greedy/breadthfirst algorithm
-        # if algorithm == "randomise":
-        #     random_object = randomise.Randomise(data)
-        #     current_protein = random_object.protein
-        # elif algorithm == "greedy":
-        #     greedy_object = greedy.Greedy(data)
-        #     current_protein = greedy_object.protein
-        # elif algorithm == "breadthfirst":
-        #     breadthfirst_object = breadthfirst.Breadthfirst(data)
-        #     current_protein = breadthfirst_object.protein
-
-    # ---------------------------- tot hier niet gebruiken
-    #print(current_protein)
-    #print(current_protein.stability)
-    
-
-    # stability in terminal check
-    # print("stability: ", current_protein.stability)
-    
-    # ---------- make csv file of foldings of the best protein -----------
-    # # make csv rows and add first line of output csv file
-    # csv_rows = []
-    # csv_rows.append(['amino','fold'])
-    
-    # # add aminoacids and folds to csv rows
-    # for aminoacid in current_protein.aminoacids:
-    #     csv_rows.append([aminoacid.nucleotide, aminoacid.fold])
-
-    # add score to csv rows
-    # csv_rows.append(['score', current_protein.stability])
-
-    # add score to baseline csv file
-    # csv_rows_baseline.append([current_protein.stability])
-
-    # -----------------------------------------------------------------
-
-    # ----------------------- dit alleen als je meerdere eiwitten hebt (bij random en greedy)
-    # # make output csv file (unique for this protein)
-    # file_name = 'results/output_file' + str(protein_counter) + '.csv'
-    # visualise.write_csv_rows(file_name, csv_rows)
-
-    # save csv and plot if this protein has the highest score so far
-    # if int(current_protein.stability) < int(highest_stability):
-    
-    # highest_stability = copy.deepcopy(current_protein.stability) 
-
-    # export csv file for baseline results
-    # visualise.write_csv_rows('results/baseline_scores.csv', csv_rows_baseline) 
-    # --------------------------
+    visualise.make_plot(best_protein)
+    visualise.write_csv_rows('results/output.csv', csv_best_score)
+    visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)

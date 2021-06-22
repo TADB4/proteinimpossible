@@ -10,7 +10,7 @@ class Greedy(Tool):
         """
         Select the best fold for this aminoacid
         """
-        # set ways of folding 
+        # set ways of folding (randomised)
         fold_options = [2, 1, -1, -2]
         folds = random.sample(fold_options, len(fold_options))
 
@@ -21,12 +21,13 @@ class Greedy(Tool):
         # check potential folds 
         for fold in folds:
             # select new location based on this fold
-            possible_loc = Tool.assign_location(self.protein, location, fold)
+            possible_loc = self.assign_location(location, fold)
             
             # check if not occupied
             if possible_loc in self.protein.occupied:
                 continue
             
+            # check how many neighbours are the result of a fold
             self.check_potential_fold(fold, possible_loc, aminoacid, neighbours_folds)
 
         # terminate if no neighbours are possible
@@ -44,9 +45,8 @@ class Greedy(Tool):
 
     def check_potential_fold(self, fold, possible_loc, aminoacid, neighbours_folds):
         """
-        Count total neighbours of a fold
+        Count in how many neighbours a fold results
         """
-            
         nucleotides = ['H', 'P', 'C']
         total_neighbours = 0
             

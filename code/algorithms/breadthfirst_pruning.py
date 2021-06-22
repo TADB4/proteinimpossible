@@ -27,6 +27,7 @@ class Breadthfirst:
             state_list = state.split(",")
             state_list.pop()
             fold_options = ["-2", "-1", "1", "2"]
+            fold_on_itself_orders = ["'-2', '1', '2', '-1'", "'-2', '-1', '2', '1'","'2', '1','-2', '-1'","'2', '-1','-2', '1'","'1', '2', '-1', '-2'", "'1','-2', '-1', '2'","'-1', '2', '1', '-2'", "'-1', '-2', '1', '2'", "'-2', '2'",  "'2', '-2'","'1', '-1'", "'-1', '1'"]
             
             # add a 0 for the fold of the last aminoacid
             if len(state_list) == depth -1:
@@ -39,8 +40,26 @@ class Breadthfirst:
                 for i in fold_options:
                     child = copy.deepcopy(state)
                     child += i
-                    queue.put(child + ",")
+
+                    print("")
+
+                    good_order = True
+                    print(str(child))
+                    for order in fold_on_itself_orders:
+                        if order in str(child) :
+                            good_order = False
+                            print("in pruned")
+                            
+                    if good_order == True:
+                        queue.put(child + ",")
+
             else:
+                # check if state list does not contain fold combinations that are impossible
+                for order in fold_on_itself_orders:
+                    if order in str(state_list):
+                        print("out pruned")
+                        continue
+                        
                 self.states.append(state_list)
                 
     def try_every_fold(self):

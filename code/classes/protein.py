@@ -8,6 +8,7 @@ class Protein:
         self.occupied = [] # locations in order of assignment
         self.stability = 0
         self.terminate = False
+        self.csv_best_score = []
         self.create_protein()
         
     def create_protein(self):
@@ -81,12 +82,10 @@ class Protein:
         """
         Calculate score of a protein
         """
-        # loop over aminoacids in protein
+        # loop over aminoacids in protein and calculate how often H and C are surrounded by H and C
         for aminoacid in self.aminoacids:
-            # calculate how often H is surrounded by H or C
             if aminoacid.nucleotide == "H":
                 self.stability = self.stability + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number))
-            # calculate how often C is surrounded by H or C
             elif aminoacid.nucleotide == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number))
         self.stability = self.stability/2

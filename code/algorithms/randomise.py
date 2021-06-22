@@ -20,7 +20,7 @@ class Randomise(Tool):
         try_location = [0, 0]
             
         # try locations until a not-occupied location is found 
-        while try_location in self.protein.occupied: #and folds:
+        while try_location in self.protein.occupied:
             
             # tells protein it has no valid way to fold
             if len(folds) == 0:
@@ -34,16 +34,14 @@ class Randomise(Tool):
             folds.remove(current_fold)
                 
             # check if location is possible 
-            try_location = Tool.assign_location(self.protein, aminoacid.location, current_fold)
+            try_location = self.assign_location(aminoacid.location, current_fold)
 
-            # if location is not possible, try next fold
-            if try_location in self.protein.occupied:
-                continue
-            # if location is possible, use location to make a new aminoacid
-            else:
+             # if location is possible, use location to make a new aminoacid
+            if try_location not in self.protein.occupied:
                 self.protein.occupied[aminoacid.aminoacid_number + 1] = try_location
                 self.protein.aminoacids[aminoacid.aminoacid_number + 1].location = try_location
                 self.protein.aminoacids[aminoacid.aminoacid_number + 1].fold = current_fold 
-                return           
+                return  
+                                   
 
                                        
