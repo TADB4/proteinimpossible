@@ -9,9 +9,8 @@ class Breadthfirst:
         self.csv_all_scores = []
         self.protein = Protein(data)
         self.potential_fold_order()
-        print(self.protein)
+        print("Orders made, Trying all the orders...")
         self.try_every_fold()  
-        print(self.protein)
 
     def potential_fold_order(self):
         """
@@ -20,6 +19,8 @@ class Breadthfirst:
         depth = len(self.data) 
         queue = Queue()
         queue.put("")
+
+        x = 0
                 
         while not queue.empty():
 
@@ -27,13 +28,14 @@ class Breadthfirst:
             state_list = state.split(",")
             state_list.pop()
             fold_options = ["-2", "-1", "1", "2"]
-            fold_on_itself_orders = ["'-2', '1', '2', '-1'", "'-2', '-1', '2', '1'","'2', '1','-2', '-1'","'2', '-1','-2', '1'","'1', '2', '-1', '-2'", "'1','-2', '-1', '2'","'-1', '2', '1', '-2'", "'-1', '-2', '1', '2'", "'-2', '2'",  "'2', '-2'","'1', '-1'", "'-1', '1'"]
+            #fold_on_itself_orders = ["'-2', '1', '2', '-1'", "'-2', '-1', '2', '1'","'2', '1','-2', '-1'","'2', '-1','-2', '1'","'1', '2', '-1', '-2'", "'1','-2', '-1', '2'","'-1', '2', '1', '-2'", "'-1', '-2', '1', '2'", "'-2', '2'",  "'2', '-2'","'1', '-1'", "'-1', '1'"]
+            impossible_orders = ["-2,1,2,-1", "-2,-1,2,1", "2,1,-2,-1","2,-1,-2,1", "1,2,-1,-2", "1,-2,-1,2", "-1,2,1,-2", "-1,-2,1,2", "-2,2", "2,-2", "1,-1", "-1,1"]
             
             # add a 0 for the fold of the last aminoacid
             if len(state_list) == depth -1:
                 state_list.append("0")
 
-            # breadth first algorithm
+            # for the state list that is not 'complete', apply breadth first algorithm
             if len(state_list) < depth - 1:
                 
                 # make copy of this state for each option
@@ -41,26 +43,21 @@ class Breadthfirst:
                     child = copy.deepcopy(state)
                     child += i
 
-                    print("")
-
+                    # check if oder contains an impossible fold order
                     good_order = True
-                    print(str(child))
-                    for order in fold_on_itself_orders:
+                    for order in impossible_orders:
                         if order in str(child) :
                             good_order = False
-                            print("in pruned")
-                            
+
+                    # if no impossible fold orders are possible, add to queue     
                     if good_order == True:
                         queue.put(child + ",")
-
             else:
-                # check if state list does not contain fold combinations that are impossible
-                for order in fold_on_itself_orders:
-                    if order in str(state_list):
-                        print("out pruned")
-                        continue
-                        
-                self.states.append(state_list)
+                # for the complete state lists, only add halve 
+                if (x % 2) == 0:       
+                    self.states.append(state_list)
+            
+            x = x + 1
                 
     def try_every_fold(self):
         """
@@ -96,7 +93,6 @@ class Breadthfirst:
             # if this protein has the best score, overwrite previous best protein
             if int(self.protein.stability) < int(best_stability):
                 best_protein = self.protein
-                print("Best protein in if: ", best_protein)
                 best_stability = self.protein.stability
                 self.protein.csv_best_score = csv_rows
                 print("New best score:", self.protein.stability)
