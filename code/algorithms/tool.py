@@ -1,10 +1,13 @@
 from code.classes.protein import Protein
 import copy
 
+"""
+Class containing functions which can be used by other algorithm classes
+"""
 class Tool():
     def __init__(self, data):
         self.data = data
-        self.protein = Protein(data) # make protein without folds/locations
+        self.protein = Protein(data) 
         self.protein.terminate = False
         self.change_protein()
 
@@ -41,7 +44,6 @@ class Tool():
             return
         # assign a random fold for the rest of the aminoacids
         else:
-            #return folds
             self.select_fold(aminoacid)  
     
     def assign_location(self, location, fold):   

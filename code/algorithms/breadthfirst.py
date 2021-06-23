@@ -1,7 +1,12 @@
 import copy
 from queue import Queue
 from code.classes.protein import Protein
+from code.algorithms.tool import Tool
 
+"""
+Breadfirst looks at all the potential ways of folding a protein, 
+by making list containing all the potential fold orders
+"""
 class Breadthfirst:
     def __init__(self, data):
         self.data = data
@@ -9,9 +14,7 @@ class Breadthfirst:
         self.csv_all_scores = []
         self.protein = Protein(data)
         self.potential_fold_order()
-        print(self.protein)
         self.try_every_fold()  
-        print(self.protein)
 
     def potential_fold_order(self):
         """
@@ -86,6 +89,9 @@ class Breadthfirst:
         self.protein = best_protein
     
     def apply_fold(self, current_location, state, csv_rows):
+        """
+        Applies the fold for all states
+        """
         for i, aminoacid in enumerate(self.protein.aminoacids):
             
             # # set location that is calculated with previous fold
@@ -95,10 +101,10 @@ class Breadthfirst:
             fold = state[i]
 
             # add fold to csv output file
-            csv_rows.append([aminoacid.nucleotide, fold])
+            csv_rows.append([aminoacid.aminoacid_type, fold])
         
             # calculate future location with this fold
-            future_location = self.assign_location(current_location, fold)
+            future_location = Tool.assign_location(self.protein, current_location, fold)
             
             # if location is free, fold aminoacid and update information
             if future_location not in self.protein.occupied:
@@ -106,21 +112,4 @@ class Breadthfirst:
                 current_location = future_location
             else:
                 break  
-
-    def assign_location(self, location, fold):   
-        """
-        Assign the location of a new aminoacid based on the fold
-        """  
-        new_value = copy.deepcopy(location)
-        fold = int(fold)
-        
-        # change location value based on fold
-        if fold == 1:
-            new_value[0] += 1
-        elif fold == -1:
-            new_value[0] -= 1
-        elif fold == 2:
-            new_value[1] += 1
-        elif fold == -2:
-            new_value[1] -= 1
-        return new_value        
+      

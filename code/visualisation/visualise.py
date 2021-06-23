@@ -21,6 +21,7 @@ def calculate_axis(protein):
         if item[1] > y_max:
             y_max = item[1]
 
+    # move min and max 2 to the sides to make a margin
     x_min -=2
     x_max +=2
     y_min -=2
@@ -28,7 +29,7 @@ def calculate_axis(protein):
 
     return [x_min, x_max, y_min, y_max]
 
-def make_plot(protein):
+def make_plot(file_name, protein):
     """
     Visualisation code that plots a protein using matplotlib
     """
@@ -55,10 +56,10 @@ def make_plot(protein):
         x_value = int(item[0])
         y_value = int(item[1])
 
-        # print nucleotide at correct location with correct color
-        if protein.aminoacids[i].nucleotide == "H":
+        # print aminoacide at correct location with correct color
+        if protein.aminoacids[i].aminoacid_type == "H":
             ax.plot(x_value, y_value, 'bo')
-        elif protein.aminoacids[i].nucleotide == "P":
+        elif protein.aminoacids[i].aminoacid_type == "P":
             ax.plot(x_value, y_value, 'ro')
         else:
             ax.plot(x_value, y_value, 'go')
@@ -83,18 +84,15 @@ def make_plot(protein):
     ax.text(axes[0] + 1, axes[2] + 1, (f'score: {protein.stability}'))
 
     # remove axes
-    # ax.axis('off')
-
-    # save with unique file name
-    # file_location = 'results/test_' + str(protein_counter)
-
-    # save with best file name (overwrite last best protein)
-    file_location = 'results/bestprotein'
+    ax.axis('off')
 
     # save figure
-    plt.savefig(file_location)
+    plt.savefig(file_name)
 
 def write_csv_rows(file_name, rows):
+    """
+    Write rows in a csv file with a given file name
+    """
 
     # open file in write mode
     with open(file_name, 'w', newline='') as f:

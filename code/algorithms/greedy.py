@@ -2,6 +2,10 @@ import random, copy
 from code.classes.protein import Protein
 from .tool import Tool
 
+"""
+Greedy look ahead algorithm depth(1) which prioritises the 
+amount of neighbours an aminoacid when chosing where to fold to
+"""
 class Greedy(Tool):
     def __init__(self, data):
         super().__init__(data)
@@ -47,14 +51,13 @@ class Greedy(Tool):
         """
         Count in how many neighbours a fold results
         """
-        nucleotides = ['H', 'P', 'C']
+        aminoacid_types = ['H', 'P', 'C']
         total_neighbours = 0
             
-        # count for each nucleotide how many neighbours it has
-        for nucleotide in nucleotides:
-            neighbours = Protein.surrounded_by(self.protein, possible_loc, nucleotide, aminoacid.aminoacid_number)
+        # count for each aminoacid how many neighbours it has
+        for aminoacid_type in aminoacid_types:
+            neighbours = Protein.surrounded_by(self.protein, possible_loc, aminoacid_type, aminoacid.aminoacid_number)
             total_neighbours = total_neighbours + neighbours
-
             neighbours_folds[fold] = total_neighbours 
             
                                        

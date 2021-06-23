@@ -1,11 +1,14 @@
 from .aminoacid import Aminoacid
 import copy
 
+"""
+Protein class builds, holds and calculates the stability for a complete protein that contains a list of aminoacid objects
+"""
 class Protein:
     def __init__(self, data):
-        self.data = data # input string of nucleotide sequence
-        self.aminoacids = []
-        self.occupied = [] # locations in order of assignment
+        self.data = data 
+        self.aminoacids = [] 
+        self.occupied = [] 
         self.stability = 0
         self.terminate = False
         self.csv_best_score = []
@@ -26,13 +29,13 @@ class Protein:
         location = [0, 0]
         fold = 0
         
-        # loop over nucleotides of the data and add info to aminoacids object
+        # loop over aminoacids of the data and add info to aminoacids object
         for i, char in enumerate(self.data):
             aminoacid_number = i
-            nucleotide = char   
+            aminoacid_type = char   
             
             # make aminoacid object and add to aminoacids list
-            aminoacid = Aminoacid(nucleotide, aminoacid_number, location, fold)
+            aminoacid = Aminoacid(aminoacid_type, aminoacid_number, location, fold)
             self.occupied.append(aminoacid.location)
             self.aminoacids.append(aminoacid)
 
@@ -42,7 +45,7 @@ class Protein:
               
     def create_fold(self, aminoacid):
         """
-        Picks a fold for the next aminoacid
+        Picks a fold for the next aminoacid by default folds straigth(North)
         """
         if aminoacid.aminoacid_number == aminoacid.size_data - 1:
             return
@@ -51,7 +54,7 @@ class Protein:
 
     def tryout_new_location(self):
         """
-        Tests if a new location is possible
+        Tests if a new location is possible 
         """
         try_location = [0, 0]
         
@@ -84,14 +87,14 @@ class Protein:
         """
         # loop over aminoacids in protein and calculate how often H and C are surrounded by H and C
         for aminoacid in self.aminoacids:
-            if aminoacid.nucleotide == "H":
+            if aminoacid.aminoacid_type == "H":
                 self.stability = self.stability + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number))
-            elif aminoacid.nucleotide == "C":
+            elif aminoacid.aminoacid_type == "C":
                 self.stability = self.stability + (-5 * self.surrounded_by(aminoacid.location, "C", aminoacid.aminoacid_number)) + (-1 * self.surrounded_by(aminoacid.location, "H", aminoacid.aminoacid_number))
         self.stability = self.stability/2
         return int(self.stability)
         
-    def surrounded_by(self, aminoacid_location, nucleotide, aminoacid_number):
+    def surrounded_by(self, aminoacid_location, aminoacid_type, aminoacid_number):
         """
         Determine which aminoacids are directly surrounding the current aminoacid
         """
@@ -112,8 +115,8 @@ class Protein:
                 if self.neighbour_is_not_bound(aminoacid_number, location_neighbour) == True:
                     # if there is a neighbour at that location, assign to variable
                     if location_neighbour in self.occupied:
-                        nucleotide_neighbour = self.aminoacids[self.occupied.index(location_neighbour)].nucleotide
-                        if nucleotide_neighbour == nucleotide:
+                        aminoacid_type_neighbour = self.aminoacids[self.occupied.index(location_neighbour)].aminoacid_type
+                        if aminoacid_type_neighbour == aminoacid_type:
                             surrounded_by += 1            
         return surrounded_by
 

@@ -2,6 +2,9 @@ import random, copy
 from code.classes.protein import Protein
 from .tool import Tool
 
+"""
+An algorithm which randomly choses in which the protein gets folded
+"""
 class Randomise(Tool):
     def __init__(self, data):
         super().__init__(data)
