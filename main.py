@@ -5,6 +5,109 @@ import copy
 import csv
 import time
 
+def main():
+    # ---------------------- promt the user ----------------------
+    # promt user for sequence
+    while True:
+        data = str(input("Insert sequence here: "))
+        if not data.isupper():
+            print("Please write sequence in uppercase.")
+        else:
+            break
+    
+    # promt user for algorithm
+    while True:
+        algorithm = input("What algorithm do you want to use? ")
+        if algorithm not in ('randomise', 'greedy', 'breadthfirst', 'breadthfirst_pruning', 'depthfirst', 'depthfirst_pruning'):
+            print("Please choose one of the options ('randomise', 'greedy', 'breadthfirst', 'breadthfirst_pruning', 'depthfirst', 'depthfirst_pruning') and write in lowercase.")
+        else:
+            break
+
+    # ---------------------- run Random / Greedy ----------------------
+    if algorithm == 'randomise' or algorithm == 'greedy':
+        while True:
+              times = input("How many times do you want to run the algorithm? ")
+              if not times.isnumeric():
+                  print("Please enter a number.")
+              else:
+                  times = int(times)
+                  break
+    
+        print(algorithm, "is running..")
+        outputs = run_algorithm(algorithm, times)
+        best_protein = outputs[0]
+        csv_best_score = outputs[1]
+        csv_all_scores = outputs[2]
+    
+    # ---------------------- run Breadthfirst / Depthfirst ----------------------
+    else:
+        print(algorithm, "is running..")
+        start_time = time.time()
+
+        if algorithm == 'breadthfirst':
+            current_object = breadthfirst.Breadthfirst(data)
+        elif algorithm == 'breadthfirst_pruning':
+            current_object = breadthfirst_pruning.Breadthfirst_pruning(data)
+        elif algorithm == 'depthfist':
+            current_object = depthfirst.Depthfirst(data)
+        else:
+            current_object = depthfirst_pruning.Depthfirst_pruning(data)
+
+        best_protein = current_object.protein
+        csv_best_score = best_protein.csv_best_score
+        csv_all_scores = current_object.csv_all_scores
+        print("Runtime: %s seconds" % (time.time() - start_time))
+  
+    # ------old breadthfirst
+    # start_time = time.time()
+    # current_object = breadthfirst.Breadthfirst(data)
+    # best_protein = current_object.protein
+    # csv_best_score = best_protein.csv_best_score
+    # csv_all_scores = current_object.csv_all_scores
+    # print("Runtime: %s seconds" % (time.time() - start_time))    
+    
+    # ------old breadthfirst pruning
+    # start_time = time.time()
+    # current_object = breadthfirst_pruning.Breadthfirst_pruning(data)
+    # best_protein = current_object.protein
+    # csv_best_score = best_protein.csv_best_score
+    # csv_all_scores = current_object.csv_all_scores
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+
+    # ------old depthfist
+    # start_time = time.time()
+    # current_object = depthfirst.Depthfirst(data)
+    # best_protein = current_object.protein
+    # csv_best_score = best_protein.csv_best_score
+    # csv_all_scores = current_object.csv_all_scores
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+    
+    #--------old depthfirst pruning
+    # start_time = time.time()
+    # current_object = depthfirst_pruning.Depthfirst_pruning(data)
+    # best_protein = current_object.protein
+    # csv_best_score = best_protein.csv_best_score
+    # csv_all_scores = current_object.csv_all_scores
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+
+    # -------------------- Old versions Random and Greedy -----------   
+    # start_time = time.time()
+    # current_object = randomise.Randomise(data)
+    # best_protein = current_object.protein
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+    # protein.Protein.score(best_protein)  
+
+    # start_time = time.time()
+    # current_object = greedy.Greedy(data)
+    # best_protein = current_object.protein
+    # print("Runtime: %s seconds" % (time.time() - start_time))
+    # protein.Protein.score(best_protein) 
+
+    # ---------------------- Visualisation ----------------------
+    visualise.make_plot('results/bestprotein', best_protein)
+    visualise.write_csv_rows('results/output.csv', csv_best_score)
+    visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)
+
 def run_algorithm(algorithm, times):
     """
     Runs an algorithm x times and returns values needed for csv and visualisation export
@@ -37,102 +140,17 @@ def run_algorithm(algorithm, times):
     csv_best_score = []
     csv_best_score.append(['amino', 'fold'])
 
+    # write data for best protein csv file
     for aminoacid in best_protein.aminoacids:
         csv_best_score.append([aminoacid.aminoacid_type, aminoacid.fold])
-
     csv_best_score.append(['score', int(best_protein.stability)])
 
     print("Runtime: %s seconds" % (time.time() - start_time))
 
     return [best_protein, csv_best_score, csv_all_scores]
 
-
 if __name__ == "__main__":
-    # promt user for sequence
-    while True:
-        data = str(input("Insert sequence here: "))
-        if not data.isupper():
-            print("Please write sequence in uppercase.")
-        else:
-            break
-    
-    # promt user for algorithm
-    while True:
-        algorithm = input("What algorithm do you want to use? [randomise/greedy/breadthfirst/breadthfirst_pruning] ")
-        if data not in ('randomise', 'greedy', 'breadthfirst', 'breadthfirst_pruning'):
-            print("Please choose one of the options ('randomise', 'greedy', 'breadthfirst', 'breadthfirst_pruning') and write in lowercase.")
-        else:
-            break
-
-    # ---------------------- run Random / Greedy ----------------------
-    if algorithm is 'randomise' or 'greedy':
-        while True:
-              times = int(input("How many times do you want to run the algorithm? "))
-              if not times.isnumeric():
-                  print("Please enter a number.")
-              else:
-                  break
-    
-        print(algorithm, "running")
-        outputs = run_algorithm(algorithm, times)
-        best_protein = outputs[0]
-        csv_best_score = outputs[1]
-        csv_all_scores = outputs[2]
-    
-    # ---------------------- run Breadth first ----------------------
-    else:
-        print(algorithm, "running")
-        start_time = time.time()
-        if algorithm is 'breadthfirst':
-            current_object = breadthfirst.Breadthfirst(data)
-        else:
-            current_object = breadthfirst_pruning.Breadthfirst_pruning(data)
-        best_protein = current_object.protein
-        csv_best_score = best_protein.csv_best_score
-        csv_all_scores = current_object.csv_all_scores
-        print("Runtime: %s seconds" % (time.time() - start_time))
-  
-    
-    # ------old breadthfirst
-    # start_time = time.time()
-    # current_object = breadthfirst_pruning.Breadthfirst_pruning(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-
-    # ------old depthfist
-    # start_time = time.time()
-    # current_object = depthfirst.Depthfirst(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    
-    #--------old depthfirst pruning
-    # start_time = time.time()
-    # current_object = depthfirst_pruning.Depthfirst_pruning(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-
-    # -------------------- Old versions Random and Greedy -----------   
-    # start_time = time.time()
-    # current_object = randomise.Randomise(data)
-    # best_protein = current_object.protein
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    # protein.Protein.score(best_protein)   
-
-    # ---------------------- Visualisation ----------------------
-    visualise.make_plot('results/bestprotein', best_protein)
-    visualise.write_csv_rows('results/output.csv', csv_best_score)
-    visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)
-
+    main()
     
     
-    # start_time = time.time()
-    # current_object = greedy.Greedy(data)
-    # best_protein = current_object.protein
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    # protein.Protein.score(best_protein)
+    
