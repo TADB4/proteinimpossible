@@ -21,7 +21,7 @@ class Constructive_alg_tool:
         """
         for i, aminoacid in enumerate(self.protein.aminoacids):
             
-            # # set location that is calculated with previous fold
+            # set location that is calculated with previous fold
             aminoacid.location = current_location
             self.protein.occupied[i] = copy.deepcopy(current_location)
 

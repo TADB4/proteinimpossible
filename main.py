@@ -34,7 +34,7 @@ def main():
                   break
     
         print(algorithm, "is running..")
-        outputs = run_algorithm(algorithm, times)
+        outputs = run_algorithm(data, algorithm, times)
         best_protein = outputs[0]
         csv_best_score = outputs[1]
         csv_all_scores = outputs[2]
@@ -57,58 +57,13 @@ def main():
         csv_best_score = best_protein.csv_best_score
         csv_all_scores = current_object.csv_all_scores
         print("Runtime: %s seconds" % (time.time() - start_time))
-  
-    # ------old breadthfirst
-    # start_time = time.time()
-    # current_object = breadthfirst.Breadthfirst(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))    
-    
-    # ------old breadthfirst pruning
-    # start_time = time.time()
-    # current_object = breadthfirst_pruning.Breadthfirst_pruning(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-
-    # ------old depthfist
-    # start_time = time.time()
-    # current_object = depthfirst.Depthfirst(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    
-    #--------old depthfirst pruning
-    # start_time = time.time()
-    # current_object = depthfirst_pruning.Depthfirst_pruning(data)
-    # best_protein = current_object.protein
-    # csv_best_score = best_protein.csv_best_score
-    # csv_all_scores = current_object.csv_all_scores
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-
-    # -------------------- Old versions Random and Greedy -----------   
-    # start_time = time.time()
-    # current_object = randomise.Randomise(data)
-    # best_protein = current_object.protein
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    # protein.Protein.score(best_protein)  
-
-    # start_time = time.time()
-    # current_object = greedy.Greedy(data)
-    # best_protein = current_object.protein
-    # print("Runtime: %s seconds" % (time.time() - start_time))
-    # protein.Protein.score(best_protein) 
-
-    # ---------------------- Visualisation ----------------------
+   
+    # ---------------------- Visualisation of picture and csv files ----------------------
     visualise.make_plot('results/bestprotein', best_protein)
     visualise.write_csv_rows('results/output.csv', csv_best_score)
     visualise.write_csv_rows('results/all_scores.csv', csv_all_scores)
 
-def run_algorithm(algorithm, times):
+def run_algorithm(data, algorithm, times):
     """
     Runs an algorithm x times and returns values needed for csv and visualisation export
     """
@@ -134,7 +89,7 @@ def run_algorithm(algorithm, times):
             best_protein = current_protein
             tries_best = counter + 1
             time_to_find =  time.time() - start_time
-            print("New best score:", current_protein.stability, "try number:", tries_best, "time to find:", time_to_find)
+            print("New best score:", current_protein.stability, ", try number:", tries_best, ", time to find:", time_to_find)
 
     # make folds list for csv file
     csv_best_score = []
