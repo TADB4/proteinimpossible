@@ -1,13 +1,13 @@
 import copy
 from queue import Queue
 from code.classes.protein import Protein
-from code.algorithms.constructive_tool import Constructive_tool
+from code.algorithms.constructive_tool import Constructive_alg_tool
 
 """
-Implements the breadthfirst algorithm that looks at all the potential ways of folding a protein, 
+Breadfirst looks at all the potential ways of folding a protein, 
 by making list containing all the potential fold orders
 """
-class Breadthfirst(Constructive_tool):
+class Breadthfirst(Constructive_alg_tool):
     def __init__(self, data):
         super().__init__(data)  
 

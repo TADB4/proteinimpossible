@@ -1,13 +1,13 @@
 import copy
 from queue import Queue
 from code.classes.protein import Protein
-from code.algorithms.constructive_tool import Constructive_tool
+from code.algorithms.constructive_tool import Constructive_alg_tool
 
 """
 Works the same as the breadthfirst class but prunes impossible fold orders 
 and only saves half of the results to reduce memory costs
 """
-class Breadthfirst_pruning(Constructive_tool):
+class Breadthfirst_pruning(Constructive_alg_tool):
     def __init__(self, data):
         super().__init__(data)
 

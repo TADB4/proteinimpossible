@@ -5,7 +5,7 @@ from code.algorithms.tool import Tool
 """
 Class containing functions that are used by the constructive algorithms(Breadthfirst and Depthfirst)
 """
-class Constructive_tool:
+class Constructive_alg_tool:
     def __init__(self, data):
         self.data = data
         self.data = data
