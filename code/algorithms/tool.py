@@ -18,7 +18,7 @@ class Tool():
         # try folds until a possible fold is found
         while self.add_folds() == False:
             Protein.clear_protein(self.protein)
-            Randomise.__init__(self, self.data)
+            self.__init__(self.data)
 
     def add_folds(self):
         """
